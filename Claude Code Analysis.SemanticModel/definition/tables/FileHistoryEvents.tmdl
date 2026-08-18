@@ -1,0 +1,106 @@
+table FileHistoryEvents
+	lineageTag: 04bcf2e8-7d0c-4ee8-9f55-12f63b6078d1
+
+	/// Count of file-version snapshots (edit events) recorded in file-history.
+	measure 'File Edit Count' = COUNTROWS(FileHistoryEvents)
+		formatString: #,0
+		displayFolder: Environment Measures
+		lineageTag: 9b910f80-9afb-4d82-a42b-e95240f6c3fa
+
+	/// Count of distinct anonymous file-hash IDs touched across all edit events.
+	measure 'Distinct Files Touched' = DISTINCTCOUNT(FileHistoryEvents[fileHash])
+		formatString: #,0
+		displayFolder: Environment Measures
+		lineageTag: 1c0d2ab9-efb1-4ea1-9c57-63c04adf13ec
+
+	column sessionId
+		dataType: string
+		isHidden
+		lineageTag: a65d0cc6-e5da-4dd3-af26-342194faf419
+		summarizeBy: none
+		sourceColumn: sessionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column fileHash
+		dataType: string
+		lineageTag: b21559c6-156c-4199-8d6f-9e073ddd57c4
+		summarizeBy: none
+		sourceColumn: fileHash
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column versionNumber
+		dataType: int64
+		lineageTag: 4d130328-0506-41ab-b689-32818e201900
+		summarizeBy: sum
+		sourceColumn: versionNumber
+
+	column EditDate
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 864f988d-4a6a-4aab-9d98-6eb63c5ee798
+		summarizeBy: none
+		sourceColumn: EditDate
+
+		variation Variation
+			isDefault
+			relationship: aa7e7f53-8144-459f-a54b-a66fe5116fd7
+			defaultHierarchy: LocalDateTable_f4d592fc-14e2-4ec3-a798-ae44dc081cbf.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column EditTimestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: bf8298e5-26a1-4b86-9d64-84d4ed37ed9c
+		summarizeBy: none
+		sourceColumn: EditTimestamp
+
+		variation Variation
+			isDefault
+			relationship: efcfa685-d8e8-47f2-b259-491d47f8587e
+			defaultHierarchy: LocalDateTable_101ca23f-1b49-4d28-bbdf-0cab7e896053.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FileHistoryEvents = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files(ClaudeHomePath & "\file-history"),
+				    FilteredBlobs = Table.SelectRows(Source, each Text.Contains([Name], "@v")),
+				    AddedSessionId = Table.AddColumn(FilteredBlobs, "sessionId", each
+				        let
+				            trimmed = Text.TrimEnd([Folder Path], "\"),
+				            lastSegment = Text.AfterDelimiter(trimmed, "\", {0, RelativePosition.FromEnd})
+				        in
+				            lastSegment
+				    ),
+				    AddedHashVersion = Table.AddColumn(AddedSessionId, "Fields", each
+				        let
+				            parts = Text.Split([Name], "@v")
+				        in [
+				            fileHash = parts{0},
+				            versionNumber = try Number.FromText(parts{1}) otherwise null
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedHashVersion, "Fields", {"fileHash","versionNumber"}),
+				    RemovedHelpers = Table.SelectColumns(Expanded, {"sessionId","fileHash","versionNumber","Date accessed"}),
+				    RenamedDate = Table.RenameColumns(RemovedHelpers, {{"Date accessed", "EditTimestamp"}}),
+				    AddedEditDate = Table.AddColumn(RenamedDate, "EditDate", each Date.From([EditTimestamp])),
+				    ChangedTypes = Table.TransformColumnTypes(AddedEditDate, {
+				        {"sessionId", type text}, {"fileHash", type text}, {"versionNumber", Int64.Type}, {"EditTimestamp", type datetime}, {"EditDate", type date}
+				    }),
+				    #"Sorted Rows" = Table.Sort(ChangedTypes,{{"EditDate", Order.Ascending}})
+				in
+				    #"Sorted Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

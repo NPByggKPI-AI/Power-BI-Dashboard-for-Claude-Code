@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Claude Code Analysis"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "89f87622-b9e8-473e-9df1-e45f0f5dc8f3"
+  }
+}

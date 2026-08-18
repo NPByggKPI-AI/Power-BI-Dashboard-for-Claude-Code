@@ -1,0 +1,128 @@
+table Plugins
+	lineageTag: 1c41317f-64f4-4919-9259-5db6219e91e7
+
+	/// Count of installed plugin records.
+	measure 'Plugin Count' = COUNTROWS(Plugins)
+		formatString: #,0
+		displayFolder: Environment Measures
+		lineageTag: 7ff1905a-d67c-44fd-9b68-33a6c16cee35
+
+	column pluginName
+		dataType: string
+		lineageTag: d5e75d55-c86e-41b4-acf1-a61d4afecd2a
+		summarizeBy: none
+		sourceColumn: pluginName
+
+		annotation SummarizationSetBy = Automatic
+
+	column marketplaceName
+		dataType: string
+		lineageTag: f36f4916-e650-4ef8-a071-23ed0607dffd
+		summarizeBy: none
+		sourceColumn: marketplaceName
+
+		annotation SummarizationSetBy = Automatic
+
+	column scope
+		dataType: string
+		lineageTag: ded50aa9-a7b7-4d49-a23f-d6cbdfac51dd
+		summarizeBy: none
+		sourceColumn: scope
+
+		annotation SummarizationSetBy = Automatic
+
+	column installPath
+		dataType: string
+		lineageTag: a16817d5-0b4f-4a50-b288-0ee1e2f0c7c7
+		summarizeBy: none
+		sourceColumn: installPath
+
+		annotation SummarizationSetBy = Automatic
+
+	column version
+		dataType: string
+		lineageTag: 60704b92-5176-48be-ae67-2192cc135f39
+		summarizeBy: none
+		sourceColumn: version
+
+		annotation SummarizationSetBy = Automatic
+
+	column InstalledAt
+		dataType: dateTime
+		lineageTag: fb9faf94-fd98-444f-8e50-2a779f1a6ee2
+		summarizeBy: none
+		sourceColumn: InstalledAt
+
+		variation Variation
+			isDefault
+			relationship: f7eb8128-d526-4596-8ff1-1c92b7a44a40
+			defaultHierarchy: LocalDateTable_3b84e7f6-62bb-4380-b2fb-fb1c96222059.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastUpdated
+		dataType: dateTime
+		lineageTag: 3fc6a379-8ab1-46b3-8786-851c98914176
+		summarizeBy: none
+		sourceColumn: LastUpdated
+
+		variation Variation
+			isDefault
+			relationship: 64bb314e-2afc-453a-8f33-ae74b8e4f164
+			defaultHierarchy: LocalDateTable_601cc372-2e20-473d-8d75-523d0d43ac67.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column gitCommitSha
+		dataType: string
+		lineageTag: 42b6d0da-04e0-4a22-aeb8-5980dd55a511
+		summarizeBy: none
+		sourceColumn: gitCommitSha
+
+		annotation SummarizationSetBy = Automatic
+
+	column projectPath
+		dataType: string
+		lineageTag: cf021701-1aad-420c-9b31-b80933b7695a
+		summarizeBy: none
+		sourceColumn: projectPath
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Plugins = m
+		mode: import
+		source =
+				let
+				    Source = Json.Document(File.Contents(ClaudeHomePath & "\plugins\installed_plugins.json")),
+				    pluginsRecord = Record.FieldOrDefault(Source, "plugins", [ ]),
+				    AsTable = Record.ToTable(pluginsRecord),
+				    ExpandedList = Table.ExpandListColumn(AsTable, "Value"),
+				    AddedFields = Table.AddColumn(ExpandedList, "Fields", each
+				        let
+				            rec = [Value]
+				        in [
+				            scope = Record.FieldOrDefault(rec, "scope", null),
+				            installPath = Record.FieldOrDefault(rec, "installPath", null),
+				            version = Record.FieldOrDefault(rec, "version", null),
+				            installedAtText = Record.FieldOrDefault(rec, "installedAt", null),
+				            lastUpdatedText = Record.FieldOrDefault(rec, "lastUpdated", null),
+				            gitCommitSha = Record.FieldOrDefault(rec, "gitCommitSha", null),
+				            projectPath = Record.FieldOrDefault(rec, "projectPath", null)
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedFields, "Fields", {"scope","installPath","version","installedAtText","lastUpdatedText","gitCommitSha","projectPath"}),
+				    RenamedKey = Table.RenameColumns(Expanded, {{"Name", "pluginKey"}}),
+				    SplitKey = Table.SplitColumn(RenamedKey, "pluginKey", Splitter.SplitTextByDelimiter("@", QuoteStyle.Csv), {"pluginName", "marketplaceName"}),
+				    AddedInstalledAt = Table.AddColumn(SplitKey, "InstalledAt", each try DateTimeZone.RemoveZone(DateTimeZone.From([installedAtText])) otherwise null),
+				    AddedLastUpdated = Table.AddColumn(AddedInstalledAt, "LastUpdated", each try DateTimeZone.RemoveZone(DateTimeZone.From([lastUpdatedText])) otherwise null),
+				    RemovedHelper = Table.RemoveColumns(AddedLastUpdated, {"Value", "installedAtText", "lastUpdatedText"}),
+				    ChangedTypes = Table.TransformColumnTypes(RemovedHelper, {
+				        {"pluginName", type text}, {"marketplaceName", type text}, {"scope", type text}, {"installPath", type text},
+				        {"version", type text}, {"InstalledAt", type datetime}, {"LastUpdated", type datetime},
+				        {"gitCommitSha", type text}, {"projectPath", type text}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_ResultType = Table
+

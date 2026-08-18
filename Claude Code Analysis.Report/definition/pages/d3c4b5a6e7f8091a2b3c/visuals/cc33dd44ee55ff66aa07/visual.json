@@ -1,0 +1,190 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "cc33dd44ee55ff66aa07",
+  "position": {
+    "x": 40,
+    "y": 488,
+    "z": 7000,
+    "height": 320,
+    "width": 610,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LiveSessions"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "LiveSessions.name",
+              "nativeQueryRef": "Name",
+              "displayName": "Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LiveSessions"
+                    }
+                  },
+                  "Property": "kind"
+                }
+              },
+              "queryRef": "LiveSessions.kind",
+              "nativeQueryRef": "Kind",
+              "displayName": "Kind"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LiveSessions"
+                    }
+                  },
+                  "Property": "entrypoint"
+                }
+              },
+              "queryRef": "LiveSessions.entrypoint",
+              "nativeQueryRef": "Entrypoint",
+              "displayName": "Entrypoint"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LiveSessions"
+                    }
+                  },
+                  "Property": "status"
+                }
+              },
+              "queryRef": "LiveSessions.status",
+              "nativeQueryRef": "Status",
+              "displayName": "Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LiveSessions"
+                    }
+                  },
+                  "Property": "cwd"
+                }
+              },
+              "queryRef": "LiveSessions.cwd",
+              "nativeQueryRef": "Folder",
+              "displayName": "Folder"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "LiveSessions"
+                  }
+                },
+                "Property": "cwd"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "136.0256752920089D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LiveSessions.name"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "422.70077871734645D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LiveSessions.cwd"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Live Sessions'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

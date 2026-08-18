@@ -1,0 +1,99 @@
+table settings
+	lineageTag: 297d2b7a-d23f-4d4b-bb69-4834b6c3004d
+
+	column 'env.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS'
+		dataType: string
+		lineageTag: 39af78a2-5db3-4e40-9b1b-e38bf1678049
+		summarizeBy: none
+		sourceColumn: env.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'permissions.defaultMode'
+		dataType: string
+		lineageTag: 5ab77271-1fa4-4e81-b10f-07273df5429b
+		summarizeBy: none
+		sourceColumn: permissions.defaultMode
+
+		annotation SummarizationSetBy = Automatic
+
+	column enabledPlugins
+		dataType: string
+		isHidden
+		lineageTag: 1e91c509-f73b-4b93-b3cb-74acc2df4421
+		summarizeBy: none
+		sourceColumn: enabledPlugins
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column extraKnownMarketplaces
+		dataType: string
+		isHidden
+		lineageTag: cfab7e59-898d-48e7-9f88-5ba6a91ab20b
+		summarizeBy: none
+		sourceColumn: extraKnownMarketplaces
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column effortLevel
+		dataType: string
+		lineageTag: 0a5afbc9-87b7-40fe-828e-41f8d7a52d5d
+		summarizeBy: none
+		sourceColumn: effortLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column autoUpdatesChannel
+		dataType: string
+		lineageTag: 65882cf8-cc02-4ab8-961d-4d6d73570dc6
+		summarizeBy: none
+		sourceColumn: autoUpdatesChannel
+
+		annotation SummarizationSetBy = Automatic
+
+	column theme
+		dataType: string
+		lineageTag: 5e49ec32-07be-473a-b63c-bb3cc7188456
+		summarizeBy: none
+		sourceColumn: theme
+
+		annotation SummarizationSetBy = Automatic
+
+	column mcpServers
+		dataType: string
+		isHidden
+		lineageTag: e753b890-ccbe-49ff-b707-18c860ae0f73
+		summarizeBy: none
+		sourceColumn: mcpServers
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column apiKeyHelper
+		dataType: string
+		lineageTag: af1db0ed-6958-4a1d-92ce-4e59e7565d21
+		summarizeBy: none
+		sourceColumn: apiKeyHelper
+
+		annotation SummarizationSetBy = Automatic
+
+	partition settings = m
+		mode: import
+		source =
+				let
+				    Source = Json.Document(File.Contents(ClaudeHomePath & "\settings.json")),
+				    #"Converted to Table" = Table.FromRecords({Source}),
+				    #"Expanded env" = Table.ExpandRecordColumn(#"Converted to Table", "env", {"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"}, {"env.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"}),
+				    #"Expanded permissions" = Table.ExpandRecordColumn(#"Expanded env", "permissions", {"defaultMode"}, {"permissions.defaultMode"})
+				in
+				    #"Expanded permissions"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

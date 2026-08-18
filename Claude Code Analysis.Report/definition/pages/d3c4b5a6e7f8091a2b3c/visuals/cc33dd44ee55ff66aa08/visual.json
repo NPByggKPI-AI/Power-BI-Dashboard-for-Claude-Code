@@ -1,0 +1,129 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "cc33dd44ee55ff66aa08",
+  "position": {
+    "x": 670,
+    "y": 488,
+    "z": 8000,
+    "height": 320,
+    "width": 610,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LiveIDEConnections"
+                    }
+                  },
+                  "Property": "ideName"
+                }
+              },
+              "queryRef": "LiveIDEConnections.ideName",
+              "nativeQueryRef": "Name",
+              "displayName": "Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LiveIDEConnections"
+                    }
+                  },
+                  "Property": "transport"
+                }
+              },
+              "queryRef": "LiveIDEConnections.transport",
+              "nativeQueryRef": "Transport",
+              "displayName": "Transport"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "LiveIDEConnections"
+                    }
+                  },
+                  "Property": "workspaceFolders"
+                }
+              },
+              "queryRef": "LiveIDEConnections.workspaceFolders",
+              "nativeQueryRef": "Folder",
+              "displayName": "Folder"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "400.47287467861776D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "LiveIDEConnections.workspaceFolders"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Live DE Connections'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

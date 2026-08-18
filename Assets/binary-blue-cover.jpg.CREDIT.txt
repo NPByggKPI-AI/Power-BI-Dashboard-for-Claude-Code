@@ -1,0 +1,10 @@
+Title: Binary Blue
+Author: geralt (Pixabay)
+Source: https://commons.wikimedia.org/wiki/File:Binary_blue.jpg (originally https://pixabay.com/illustrations/binary-null-one-digital-blue-797274/)
+License: CC0 1.0 Universal (Public Domain Dedication) — http://creativecommons.org/publicdomain/zero/1.0/deed.en
+No attribution required. Credited here for record-keeping.
+
+Used as the Home page cover image (ID 00009). Report references the image via its stable Wikimedia Commons URL
+(https://upload.wikimedia.org/wikipedia/commons/b/b5/Binary_blue.jpg) rather than this local file, since Power BI
+cannot load images from a local file path at render time — this local copy exists for workspace/version-control
+purposes per the task's request.

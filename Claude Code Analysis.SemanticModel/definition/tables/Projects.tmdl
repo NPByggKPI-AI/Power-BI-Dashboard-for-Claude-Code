@@ -1,0 +1,90 @@
+table Projects
+	lineageTag: aef93f90-b498-40ed-836a-b5dc85714853
+
+	column Name
+		dataType: string
+		lineageTag: a827d699-72e9-4c19-a357-fcd946585ae5
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Extension
+		dataType: string
+		lineageTag: 62865296-e7fe-4034-a7fa-f28ebd08c9b3
+		summarizeBy: none
+		sourceColumn: Extension
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date accessed'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f4e7ffba-e91b-4e94-a748-16be601cd9f8
+		summarizeBy: none
+		sourceColumn: Date accessed
+
+		variation Variation
+			isDefault
+			relationship: 603151ba-f9a9-4ead-ab2b-558eff5b77e6
+			defaultHierarchy: LocalDateTable_7cea8989-62f4-49df-9cc8-f0b5953eb711.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date modified'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 44ec1a6d-a14e-43dd-b54e-68f2b19823ef
+		summarizeBy: none
+		sourceColumn: Date modified
+
+		variation Variation
+			isDefault
+			relationship: eaa42b1c-07b5-4b01-8a37-a8d8c4b9e4bb
+			defaultHierarchy: LocalDateTable_a9091cb2-2bed-49b2-b1bb-1610305e1ec6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date created'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 91279ae2-0404-41c9-91df-56663fe45f78
+		summarizeBy: none
+		sourceColumn: Date created
+
+		variation Variation
+			isDefault
+			relationship: 939485ed-f65a-4701-aa61-d49b6b8d373d
+			defaultHierarchy: LocalDateTable_fed30fbd-07ae-4ac0-b0b2-af19b9f6d2a2.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Folder Path'
+		dataType: string
+		lineageTag: 56ea7081-f7a8-4447-a313-e4098fe58d03
+		summarizeBy: none
+		sourceColumn: Folder Path
+
+		annotation SummarizationSetBy = Automatic
+
+	column Subsession
+		dataType: string
+		lineageTag: 9c80a97c-e88c-49a7-81c7-e1a8b0295dd5
+		summarizeBy: none
+		sourceColumn: Subsession
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Projects = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files(ClaudeHomePath & "\projects"),
+				    #"Added Custom" = Table.AddColumn(Source, "Subsession", each if Text.End([Folder Path],10) = "subagents\" then "subagents" else if Text.End([Folder Path],7) = "memory\" then "memory" else if Text.End([Folder Path],13) = "tool-results\" then "tool-results" else "")
+				in
+				    #"Added Custom"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

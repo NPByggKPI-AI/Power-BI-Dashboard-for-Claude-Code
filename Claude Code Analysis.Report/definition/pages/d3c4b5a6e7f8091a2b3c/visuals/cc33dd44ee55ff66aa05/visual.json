@@ -1,0 +1,174 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "cc33dd44ee55ff66aa05",
+  "position": {
+    "x": 40,
+    "y": 144,
+    "z": 5000,
+    "height": 320,
+    "width": 930,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Plugins"
+                    }
+                  },
+                  "Property": "pluginName"
+                }
+              },
+              "queryRef": "Plugins.pluginName",
+              "nativeQueryRef": "Name",
+              "displayName": "Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Plugins"
+                    }
+                  },
+                  "Property": "marketplaceName"
+                }
+              },
+              "queryRef": "Plugins.marketplaceName",
+              "nativeQueryRef": "Marketplace",
+              "displayName": "Marketplace"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Plugins"
+                    }
+                  },
+                  "Property": "version"
+                }
+              },
+              "queryRef": "Plugins.version",
+              "nativeQueryRef": "Version",
+              "displayName": "Version"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Plugins"
+                    }
+                  },
+                  "Property": "scope"
+                }
+              },
+              "queryRef": "Plugins.scope",
+              "nativeQueryRef": "Scope",
+              "displayName": "Scope"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Plugins"
+                    }
+                  },
+                  "Property": "InstalledAt"
+                }
+              },
+              "queryRef": "Plugins.InstalledAt",
+              "nativeQueryRef": "Installed At",
+              "displayName": "Installed At"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Plugins"
+                    }
+                  },
+                  "Property": "projectPath"
+                }
+              },
+              "queryRef": "Plugins.projectPath",
+              "nativeQueryRef": "Path",
+              "displayName": "Path"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "485.73901586399177D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Plugins.projectPath"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Plugins Installed'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

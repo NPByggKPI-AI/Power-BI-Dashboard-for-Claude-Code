@@ -1,0 +1,135 @@
+table Sessions
+	lineageTag: 50ed686c-6523-42a8-b3cb-6599edcc15e0
+
+	/// Count of distinct sessions.
+	measure 'Session Count' = COUNTROWS(Sessions)
+		formatString: #,0
+		displayFolder: Performance Measures
+		lineageTag: c48b0d20-7b3f-4279-90d0-78b627a5b9ea
+
+	column sessionId
+		isHidden
+		lineageTag: 13fbcb85-4f08-4ecb-a39e-b0e4369fa9c9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: SessionEvents[sessionId]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'First Event'
+		lineageTag: c21c8b83-20cc-4028-83c4-501c8724920b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [First Event]
+
+		variation Variation
+			isDefault
+			relationship: bfdb35c4-b9d1-4d29-9b27-f554394b2f5c
+			defaultHierarchy: LocalDateTable_3cd6937b-9750-4177-acc7-fe1515dcc8d7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last Event'
+		lineageTag: 8a2fbdd3-6977-4160-aecc-d9d60301070d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Last Event]
+
+		variation Variation
+			isDefault
+			relationship: f67f7fb2-aec2-4102-81b8-dbe1a62f9204
+			defaultHierarchy: LocalDateTable_c9bffaca-1587-4bb8-8765-bd23ea6960eb.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Turn Count'
+		lineageTag: 73c315e0-3f65-4cdc-ac1f-33c3bdf30d57
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Turn Count]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Turns'
+		lineageTag: ec9484b2-d77b-4021-b078-d91d7e66c6c5
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [User Turns]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Assistant Turns'
+		lineageTag: 05b12ba9-4d6e-406b-b5a5-616a94162ff0
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Assistant Turns]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Distinct Models Used'
+		lineageTag: 21029b93-3aed-400b-ad41-59ce3c4cebba
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Distinct Models Used]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duration Minutes' = DATEDIFF(Sessions[First Event], Sessions[Last Event], MINUTE)
+		dataType: int64
+		formatString: #,0
+		lineageTag: 824dfd80-2237-4dff-a3c0-0eaf664055fb
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duration Bucket Order' =
+			SWITCH(TRUE(),
+			    Sessions[Duration Minutes] <= 15, 1,
+			    Sessions[Duration Minutes] <= 60, 2,
+			    Sessions[Duration Minutes] <= 240, 3,
+			    Sessions[Duration Minutes] <= 720, 4,
+			    5
+			)
+		dataType: int64
+		isHidden
+		lineageTag: 5260282c-54c3-4776-83b3-327ccb0e8254
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column SessionId8 = LEFT(Sessions[sessionId], 8)
+		dataType: string
+		isHidden
+		lineageTag: 29bf3d55-a57a-4d9a-ba3c-9ca943c0f99c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duration Bucket' =
+			SWITCH(TRUE(),
+			    Sessions[Duration Minutes] <= 15, "0-15 min",
+			    Sessions[Duration Minutes] <= 60, "15-60 min",
+			    Sessions[Duration Minutes] <= 240, "1-4 hr",
+			    Sessions[Duration Minutes] <= 720, "4-12 hr",
+			    "12+ hr"
+			)
+		dataType: string
+		lineageTag: f7aab009-995d-4cb8-b5ec-d814da2fad18
+		summarizeBy: none
+		sortByColumn: 'Duration Bucket Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sessions = calculated
+		mode: import
+		source =
+				SUMMARIZECOLUMNS(
+				    SessionEvents[sessionId],
+				    "First Event", MIN(SessionEvents[EventTimestamp]),
+				    "Last Event", MAX(SessionEvents[EventTimestamp]),
+				    "Turn Count", COUNTROWS(SessionEvents),
+				    "User Turns", CALCULATE(COUNTROWS(SessionEvents), SessionEvents[EventType] = "user"),
+				    "Assistant Turns", CALCULATE(COUNTROWS(SessionEvents), SessionEvents[EventType] = "assistant"),
+				    "Distinct Models Used", DISTINCTCOUNT(SessionEvents[model])
+				)
+

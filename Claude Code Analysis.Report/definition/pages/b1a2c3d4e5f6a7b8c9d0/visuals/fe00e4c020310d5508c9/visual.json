@@ -1,0 +1,67 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "fe00e4c020310d5508c9",
+  "position": {
+    "x": 1140,
+    "y": 24,
+    "z": 11000,
+    "height": 96,
+    "width": 144,
+    "tabOrder": 11000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ToolCalls"
+                        }
+                      },
+                      "Property": "toolName"
+                    }
+                  },
+                  "Function": 2
+                }
+              },
+              "queryRef": "Min(ToolCalls.toolName)",
+              "nativeQueryRef": "Total tools",
+              "displayName": "Total tools"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "ToolCalls"
+                      }
+                    },
+                    "Property": "toolName"
+                  }
+                },
+                "Function": 2
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

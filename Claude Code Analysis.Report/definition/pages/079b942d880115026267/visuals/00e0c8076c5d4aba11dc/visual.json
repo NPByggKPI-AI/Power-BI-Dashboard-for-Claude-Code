@@ -1,0 +1,652 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "00e0c8076c5d4aba11dc",
+  "position": {
+    "x": 39.538714991762767,
+    "y": 910.97199341021417,
+    "z": 7000,
+    "height": 150.24711696869852,
+    "width": 1612.9225700164743,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "history"
+                    }
+                  },
+                  "Property": "project"
+                }
+              },
+              "queryRef": "history.project",
+              "nativeQueryRef": "Projects",
+              "displayName": "Projects"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "history"
+                    }
+                  },
+                  "Property": "Distinct Sessions"
+                }
+              },
+              "queryRef": "history.Distinct Sessions",
+              "nativeQueryRef": "Sessions",
+              "displayName": "Sessions"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "history"
+                        }
+                      },
+                      "Property": "display"
+                    }
+                  },
+                  "Function": 5
+                }
+              },
+              "queryRef": "history.display",
+              "nativeQueryRef": "Prompts",
+              "displayName": "Prompts"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FileHistoryEvents"
+                        }
+                      },
+                      "Property": "EditTimestamp"
+                    }
+                  },
+                  "Function": 5
+                }
+              },
+              "queryRef": "FileHistoryEvents.EditTimestamp",
+              "nativeQueryRef": "Count of EditTimestamp",
+              "displayName": "File Edits"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "history"
+                        }
+                      },
+                      "Property": "content1"
+                    }
+                  },
+                  "Function": 5
+                }
+              },
+              "queryRef": "history.content1",
+              "nativeQueryRef": "Content1",
+              "displayName": "Content1"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "history"
+                        }
+                      },
+                      "Property": "content2"
+                    }
+                  },
+                  "Function": 5
+                }
+              },
+              "queryRef": "history.content2",
+              "nativeQueryRef": "Content2",
+              "displayName": "Content2"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sessions"
+                        }
+                      },
+                      "Property": "Turn Count"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Sessions.Turn Count)",
+              "nativeQueryRef": "Turn Count",
+              "displayName": "Turn Count"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sessions"
+                        }
+                      },
+                      "Property": "User Turns"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Sessions.User Turns)",
+              "nativeQueryRef": "User Turns",
+              "displayName": "User Turns"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sessions"
+                        }
+                      },
+                      "Property": "Assistant Turns"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Sessions.Assistant Turns)",
+              "nativeQueryRef": "Assistant Turns",
+              "displayName": "Assistant Turns"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sessions"
+                        }
+                      },
+                      "Property": "Duration Minutes"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Sessions.Duration Minutes)",
+              "nativeQueryRef": "Duration Minutes",
+              "displayName": "Duration Minutes"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sessions"
+                        }
+                      },
+                      "Property": "Distinct Models Used"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Sessions.Distinct Models Used)",
+              "nativeQueryRef": "Models Used",
+              "displayName": "Models Used"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sessions"
+                        }
+                      },
+                      "Property": "First Event"
+                    }
+                  },
+                  "Function": 3
+                }
+              },
+              "queryRef": "Sessions.First Event",
+              "nativeQueryRef": "First Event",
+              "displayName": "First Event"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Sessions"
+                        }
+                      },
+                      "Property": "Last Event"
+                    }
+                  },
+                  "Function": 4
+                }
+              },
+              "queryRef": "Sessions.Last Event",
+              "nativeQueryRef": "Last Event",
+              "displayName": "Last Event"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Sessions"
+                  }
+                },
+                "Property": "First Event"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "autoSizeColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "479.5094086307709D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "history.project"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "63.953714096949014D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "history.Distinct Sessions"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "67.55905511811024D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "history.display"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "79.99205762072381D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "history.content1"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "72.43300169643987D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "history.content2"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "72.29922066476533D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "FileHistoryEvents.EditTimestamp"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "107.08420978274427D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sessions.First Event"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "83.13508374545691D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(Sessions.Turn Count)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "75.9719807897397D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(Sessions.User Turns)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "108.71665597265361D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(Sessions.Assistant Turns)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "126.29819106097386D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(Sessions.Duration Minutes)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "106.60367274374977D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(Sessions.Distinct Models Used)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "86.6524141043753D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sessions.Last Event"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "40D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "FileHistoryEvents.EditDate.Variation.Date Hierarchy.Year"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "60D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "FileHistoryEvents.EditDate.Variation.Date Hierarchy.Quarter"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "53D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "FileHistoryEvents.EditDate.Variation.Date Hierarchy.Month"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "35D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "FileHistoryEvents.EditDate.Variation.Date Hierarchy.Day"
+          }
+        }
+      ],
+      "columnFormatting": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sessions.First Event"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sessions.Last Event"
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Resume by Project'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

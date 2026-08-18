@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "cc33dd44ee55ff66aa02",
+  "position": {
+    "x": 650,
+    "y": 24,
+    "z": 2000,
+    "height": 96,
+    "width": 190,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "card",
+    "autoSelectVisualType": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Marketplaces"
+                    }
+                  },
+                  "Property": "Marketplace Count"
+                }
+              },
+              "queryRef": "Marketplaces.Marketplace Count",
+              "nativeQueryRef": "Marketplaces",
+              "displayName": "Marketplaces"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

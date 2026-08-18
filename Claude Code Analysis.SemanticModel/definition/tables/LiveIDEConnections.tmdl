@@ -1,0 +1,61 @@
+table LiveIDEConnections
+	lineageTag: 33099e04-544e-4af6-bb7c-714fb4c3e004
+
+	column pid
+		dataType: int64
+		lineageTag: c355cd1a-8a7d-4238-a651-1a2f0b0e05d9
+		sourceColumn: pid
+
+	column workspaceFolders
+		dataType: string
+		lineageTag: 9d936d84-0083-41e3-a9cb-5284140b3a1f
+		sourceColumn: workspaceFolders
+
+	column ideName
+		dataType: string
+		lineageTag: 8bfbe8ab-ef24-4cf9-a9ad-668224b58c09
+		sourceColumn: ideName
+
+	column transport
+		dataType: string
+		lineageTag: 44aae156-1a78-4a33-9fe5-a196200ea98f
+		sourceColumn: transport
+
+	column runningInWindows
+		dataType: boolean
+		lineageTag: d7ebd86f-7305-4f29-8495-10dd55644520
+		sourceColumn: runningInWindows
+
+	partition LiveIDEConnections = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files(ClaudeHomePath & "\ide"),
+				    FilteredLock = Table.SelectRows(Source, each [Extension] = ".lock"),
+				    AddedContentText = Table.AddColumn(FilteredLock, "ContentText", each Text.FromBinary([Content])),
+				    AddedParsed = Table.AddColumn(AddedContentText, "Record", each try Json.Document([ContentText]) otherwise null),
+				    ValidRecords = Table.SelectRows(AddedParsed, each [Record] <> null and Value.Is([Record], type record)),
+				    AddedFields = Table.AddColumn(ValidRecords, "Fields", each
+				        let
+				            rec = [Record],
+				            wf = Record.FieldOrDefault(rec, "workspaceFolders", null),
+				            wfSafe = if wf <> null and Value.Is(wf, type list) then wf else {}
+				        in [
+				            pid = Record.FieldOrDefault(rec, "pid", null),
+				            workspaceFolders = Text.Combine(List.Transform(wfSafe, each Text.From(_)), "; "),
+				            ideName = Record.FieldOrDefault(rec, "ideName", null),
+				            transport = Record.FieldOrDefault(rec, "transport", null),
+				            runningInWindows = Record.FieldOrDefault(rec, "runningInWindows", null)
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedFields, "Fields", {"pid","workspaceFolders","ideName","transport","runningInWindows"}),
+				    RemovedHelpers = Table.SelectColumns(Expanded, {"pid","workspaceFolders","ideName","transport","runningInWindows"}),
+				    ChangedTypes = Table.TransformColumnTypes(RemovedHelpers, {
+				        {"pid", Int64.Type}, {"workspaceFolders", type text}, {"ideName", type text},
+				        {"transport", type text}, {"runningInWindows", type logical}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_ResultType = Table
+

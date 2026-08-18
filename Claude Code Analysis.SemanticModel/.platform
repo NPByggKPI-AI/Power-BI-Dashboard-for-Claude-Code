@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Claude Code Analysis"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "274fd8fd-3c2b-48bd-9d4a-9cebbc47a717"
+  }
+}

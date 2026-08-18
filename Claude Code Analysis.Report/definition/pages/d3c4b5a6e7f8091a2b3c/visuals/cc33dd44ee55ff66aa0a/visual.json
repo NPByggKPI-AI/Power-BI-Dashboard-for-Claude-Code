@@ -1,0 +1,204 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "cc33dd44ee55ff66aa0a",
+  "position": {
+    "x": 40,
+    "y": 832,
+    "z": 10000,
+    "height": 232,
+    "width": 930,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Marketplaces"
+                    }
+                  },
+                  "Property": "marketplaceName"
+                }
+              },
+              "queryRef": "Marketplaces.marketplaceName",
+              "nativeQueryRef": "Name",
+              "displayName": "Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Marketplaces"
+                    }
+                  },
+                  "Property": "LastUpdated"
+                }
+              },
+              "queryRef": "Marketplaces.LastUpdated",
+              "nativeQueryRef": "Last Updated",
+              "displayName": "Last Updated"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Marketplaces"
+                    }
+                  },
+                  "Property": "sourceLocation"
+                }
+              },
+              "queryRef": "Marketplaces.sourceLocation",
+              "nativeQueryRef": " Source Location",
+              "displayName": " Source Location"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Marketplaces"
+                    }
+                  },
+                  "Property": "installLocation"
+                }
+              },
+              "queryRef": "Marketplaces.installLocation",
+              "nativeQueryRef": "Install Location",
+              "displayName": "Install Location"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Marketplaces"
+                    }
+                  },
+                  "Property": "sourceType"
+                }
+              },
+              "queryRef": "Marketplaces.sourceType",
+              "nativeQueryRef": "Source Type",
+              "displayName": "Source Type"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Marketplaces"
+                  }
+                },
+                "Property": "installLocation"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "208.39867638800018D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Marketplaces.marketplaceName"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "225.1145676918942D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Marketplaces.sourceLocation"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "287.10016639521467D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Marketplaces.installLocation"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Marketplaces'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

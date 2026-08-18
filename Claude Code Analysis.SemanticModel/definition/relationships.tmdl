@@ -1,0 +1,143 @@
+relationship a31608bb-1eb5-4af3-a373-224e5b03c6ec
+	joinOnDateBehavior: datePartOnly
+	fromColumn: history.TimeDate
+	toColumn: LocalDateTable_baede229-4a20-47a0-a172-63711fce80ad.Date
+
+relationship d7cc63a1-7bf1-4990-9383-75564f2d67d6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: history.Date
+	toColumn: LocalDateTable_8ecdee9a-542a-4d0a-9ecd-03dc35fface1.Date
+
+relationship 464f7aa4-3cf0-4a3a-9d6c-f71e769c7c88
+	joinOnDateBehavior: datePartOnly
+	fromColumn: SessionEvents.EventDate
+	toColumn: LocalDateTable_0f7b48c7-1878-4dee-97bb-dc0aa3808c17.Date
+
+relationship 5cdc15cd-8db0-494d-9495-64276633bc1b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: SessionEvents.EventTimestamp
+	toColumn: LocalDateTable_6b9bbdb2-acee-447f-9812-f411b209337a.Date
+
+relationship TeamMembers_teamName_Teams_teamName
+	fromColumn: TeamMembers.teamName
+	toColumn: Teams.teamName
+
+relationship history_sessionId_Sessions_sessionId
+	crossFilteringBehavior: bothDirections
+	fromColumn: history.sessionId
+	toColumn: Sessions.sessionId
+
+relationship ToolCalls_sessionId_Sessions_sessionId
+	crossFilteringBehavior: bothDirections
+	fromColumn: ToolCalls.sessionId
+	toColumn: Sessions.sessionId
+
+relationship Tasks_sessionId8_Sessions_SessionId8
+	fromColumn: Tasks.sessionId8
+	toColumn: Sessions.SessionId8
+
+relationship Teams_sessionId8_Sessions_SessionId8
+	crossFilteringBehavior: bothDirections
+	fromColumn: Teams.sessionId8
+	toColumn: Sessions.SessionId8
+
+relationship FileHistoryEvents_sessionId_Sessions_sessionId
+	crossFilteringBehavior: bothDirections
+	fromColumn: FileHistoryEvents.sessionId
+	toColumn: Sessions.sessionId
+
+relationship SessionEnvPlugins_sessionId_Sessions_sessionId
+	crossFilteringBehavior: bothDirections
+	fromColumn: SessionEnvPlugins.sessionId
+	toColumn: Sessions.sessionId
+
+relationship SessionEvents_sessionId_Sessions_sessionId
+	crossFilteringBehavior: bothDirections
+	fromColumn: SessionEvents.sessionId
+	toColumn: Sessions.sessionId
+
+relationship aa7e7f53-8144-459f-a54b-a66fe5116fd7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FileHistoryEvents.EditDate
+	toColumn: LocalDateTable_f4d592fc-14e2-4ec3-a798-ae44dc081cbf.Date
+
+relationship d0353d82-a5cf-4b71-8beb-00fb1bd3569b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ShellSnapshots.SnapshotDate
+	toColumn: LocalDateTable_f479dd65-0589-4390-be83-24b229c34c4d.Date
+
+relationship 8f3a1c20-4b6d-4e91-9c2a-7d1e5f80300e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Marketplaces.LastUpdated
+	toColumn: LocalDateTable_Marketplaces_LastUpdated.Date
+
+relationship efcfa685-d8e8-47f2-b259-491d47f8587e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FileHistoryEvents.EditTimestamp
+	toColumn: LocalDateTable_101ca23f-1b49-4d28-bbdf-0cab7e896053.Date
+
+relationship 8ce3932f-348c-4954-bdb6-56c5c0fc9a12
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ToolCalls.EventTimestamp
+	toColumn: LocalDateTable_6c28e2e7-7195-4097-96c7-5dbfb07f4c65.Date
+
+relationship a9c6d47e-2035-4ecd-917c-d41e9bd1152c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Teams.CreatedAt
+	toColumn: LocalDateTable_00813db3-a8eb-450d-ba5d-4c6d81fb46ed.Date
+
+relationship 0211c35f-8eee-434b-bbf8-6f39576a2476
+	joinOnDateBehavior: datePartOnly
+	fromColumn: TeamMembers.JoinedAt
+	toColumn: LocalDateTable_5b7cd8f9-a494-4add-9a47-2cb53ac0e40e.Date
+
+relationship f7eb8128-d526-4596-8ff1-1c92b7a44a40
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Plugins.InstalledAt
+	toColumn: LocalDateTable_3b84e7f6-62bb-4380-b2fb-fb1c96222059.Date
+
+relationship 64bb314e-2afc-453a-8f33-ae74b8e4f164
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Plugins.LastUpdated
+	toColumn: LocalDateTable_601cc372-2e20-473d-8d75-523d0d43ac67.Date
+
+relationship 9c069029-42ef-4ba9-85a2-cb17a4e78cef
+	joinOnDateBehavior: datePartOnly
+	fromColumn: LiveSessions.StartedAt
+	toColumn: LocalDateTable_08dc214e-5d34-471b-86c6-2c0f3e43952a.Date
+
+relationship 9f79438c-30b5-48c6-9e6b-9df1d285d33f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ShellSnapshots.SnapshotTimestamp
+	toColumn: LocalDateTable_d8fe3d55-7889-4fcc-bbc0-ec11c3761690.Date
+
+relationship d290c262-3983-4a43-83ca-0098fe72174d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Plans.FileModified
+	toColumn: LocalDateTable_72b209e0-0040-43c2-bcf5-ad2bd44cdedb.Date
+
+relationship bfdb35c4-b9d1-4d29-9b27-f554394b2f5c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Sessions.'First Event'
+	toColumn: LocalDateTable_3cd6937b-9750-4177-acc7-fe1515dcc8d7.Date
+
+relationship f67f7fb2-aec2-4102-81b8-dbe1a62f9204
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Sessions.'Last Event'
+	toColumn: LocalDateTable_c9bffaca-1587-4bb8-8765-bd23ea6960eb.Date
+
+relationship 603151ba-f9a9-4ead-ab2b-558eff5b77e6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Projects.'Date accessed'
+	toColumn: LocalDateTable_7cea8989-62f4-49df-9cc8-f0b5953eb711.Date
+
+relationship eaa42b1c-07b5-4b01-8a37-a8d8c4b9e4bb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Projects.'Date modified'
+	toColumn: LocalDateTable_a9091cb2-2bed-49b2-b1bb-1610305e1ec6.Date
+
+relationship 939485ed-f65a-4701-aa61-d49b6b8d373d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Projects.'Date created'
+	toColumn: LocalDateTable_fed30fbd-07ae-4ac0-b0b2-af19b9f6d2a2.Date
+

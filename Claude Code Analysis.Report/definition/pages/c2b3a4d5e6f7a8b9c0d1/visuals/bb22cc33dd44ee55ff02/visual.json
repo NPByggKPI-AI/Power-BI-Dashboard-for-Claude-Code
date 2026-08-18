@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "bb22cc33dd44ee55ff02",
+  "position": {
+    "x": 644.28571428571433,
+    "y": 24.285714285714288,
+    "z": 2000,
+    "height": 95.714285714285722,
+    "width": 201.42857142857144,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "card",
+    "autoSelectVisualType": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Tasks"
+                    }
+                  },
+                  "Property": "Task Completion Rate"
+                }
+              },
+              "queryRef": "Tasks.Task Completion Rate",
+              "nativeQueryRef": "Task Completion Rate",
+              "displayName": "Task Completion Rate"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

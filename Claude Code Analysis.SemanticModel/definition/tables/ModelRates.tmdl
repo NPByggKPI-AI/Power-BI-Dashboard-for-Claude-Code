@@ -1,0 +1,85 @@
+/// Flat table with prices.
+/// For updated prices check: https://claude.com/pricing#api
+table ModelRates
+	lineageTag: 702b95d4-994d-45d3-b127-f6e683de1686
+
+	column Model
+		dataType: string
+		lineageTag: d0248b76-88b2-4e77-befa-65e1d942c174
+		summarizeBy: none
+		sourceColumn: Model
+
+		annotation SummarizationSetBy = Automatic
+
+	column InputRatePerMTok
+		dataType: double
+		lineageTag: 5ed37022-bbf1-487d-8239-42f557bc4b1f
+		summarizeBy: sum
+		sourceColumn: InputRatePerMTok
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OutputRatePerMTok
+		dataType: double
+		lineageTag: 689b927e-7549-4158-95b0-9f81a7678ea0
+		summarizeBy: sum
+		sourceColumn: OutputRatePerMTok
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CacheWriteRatePerMTok
+		dataType: double
+		lineageTag: d3896ed0-82ce-453a-9ecc-843606acca17
+		summarizeBy: sum
+		sourceColumn: CacheWriteRatePerMTok
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CacheReadRatePerMTok
+		dataType: double
+		lineageTag: 6a63e98f-ab6d-46ab-8cb9-bcd62d93c135
+		summarizeBy: sum
+		sourceColumn: CacheReadRatePerMTok
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Notes
+		dataType: string
+		lineageTag: f5d11275-b528-4ade-a3fa-c768c439f78b
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ModelRates = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				        {"Model", "InputRatePerMTok", "OutputRatePerMTok", "CacheWriteRatePerMTok", "CacheReadRatePerMTok", "Notes"},
+				        {
+				            {"claude-opus-5", 5.00, 25.00, 6.25, 0.50, "Standard Opus 5 rate ($5/$25 per MTok)."},
+				            {"claude-opus-4-8", 5.00, 25.00, 6.25, 0.50, "Standard Opus 4.8 rate ($5/$25 per MTok)."},
+				            {"claude-sonnet-5", 2.00, 10.00, 2.50, 0.20, "Introductory rate through 2026-08-31 ($2/$10 per MTok). Standard rate is $3/$15 after that date -- update this row then."},
+				            {"claude-fable-5", 10.00, 50.00, 12.50, 1.00, "Standard Fable 5 rate ($10/$50 per MTok)."}
+				        }
+				    ),
+				    ChangedTypes = Table.TransformColumnTypes(Source, {
+				        {"Model", type text}, {"InputRatePerMTok", type number}, {"OutputRatePerMTok", type number},
+				        {"CacheWriteRatePerMTok", type number}, {"CacheReadRatePerMTok", type number}, {"Notes", type text}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

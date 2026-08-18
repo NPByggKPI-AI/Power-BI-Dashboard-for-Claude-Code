@@ -1,0 +1,116 @@
+table LiveSessions
+	lineageTag: 7d69d9c1-61b4-4729-97d4-239180218d68
+
+	column pid
+		dataType: int64
+		lineageTag: 0723cc2b-75e6-41e1-a945-da53616777e1
+		summarizeBy: sum
+		sourceColumn: pid
+
+		annotation SummarizationSetBy = Automatic
+
+	column sessionId
+		dataType: string
+		lineageTag: b51a64a0-42fb-4117-9ef5-de2e2ce4327f
+		summarizeBy: none
+		sourceColumn: sessionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column cwd
+		dataType: string
+		lineageTag: e54dc0f2-cda5-4b5c-a785-4ea785f352b6
+		summarizeBy: none
+		sourceColumn: cwd
+
+		annotation SummarizationSetBy = Automatic
+
+	column version
+		dataType: string
+		lineageTag: 05100753-9fca-4813-a719-3671201c2610
+		summarizeBy: none
+		sourceColumn: version
+
+		annotation SummarizationSetBy = Automatic
+
+	column kind
+		dataType: string
+		lineageTag: 2a16ae10-0cce-47ff-823e-66cdf9e3aa10
+		summarizeBy: none
+		sourceColumn: kind
+
+		annotation SummarizationSetBy = Automatic
+
+	column entrypoint
+		dataType: string
+		lineageTag: bce350b5-558b-4b67-bf27-4cbf58752feb
+		summarizeBy: none
+		sourceColumn: entrypoint
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 9b50b1ee-359c-4de2-9eff-74114825a42b
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: c62c89ed-8676-4e0d-92bf-6b0c8357df5b
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartedAt
+		dataType: dateTime
+		lineageTag: 0983a021-5705-4486-a42f-6aaa46316018
+		summarizeBy: none
+		sourceColumn: StartedAt
+
+		variation Variation
+			isDefault
+			relationship: 9c069029-42ef-4ba9-85a2-cb17a4e78cef
+			defaultHierarchy: LocalDateTable_08dc214e-5d34-471b-86c6-2c0f3e43952a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition LiveSessions = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files(ClaudeHomePath & "\sessions"),
+				    FilteredJson = Table.SelectRows(Source, each [Extension] = ".json"),
+				    AddedContentText = Table.AddColumn(FilteredJson, "ContentText", each Text.FromBinary([Content])),
+				    AddedParsed = Table.AddColumn(AddedContentText, "Record", each try Json.Document([ContentText]) otherwise null),
+				    ValidRecords = Table.SelectRows(AddedParsed, each [Record] <> null and Value.Is([Record], type record)),
+				    AddedFields = Table.AddColumn(ValidRecords, "Fields", each
+				        let rec = [Record] in [
+				            pid = Record.FieldOrDefault(rec, "pid", null),
+				            sessionId = Record.FieldOrDefault(rec, "sessionId", null),
+				            cwd = Record.FieldOrDefault(rec, "cwd", null),
+				            version = Record.FieldOrDefault(rec, "version", null),
+				            kind = Record.FieldOrDefault(rec, "kind", null),
+				            entrypoint = Record.FieldOrDefault(rec, "entrypoint", null),
+				            name = Record.FieldOrDefault(rec, "name", null),
+				            status = Record.FieldOrDefault(rec, "status", null),
+				            startedAtMs = Record.FieldOrDefault(rec, "startedAt", null)
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedFields, "Fields", {"pid","sessionId","cwd","version","kind","entrypoint","name","status","startedAtMs"}),
+				    RemovedHelpers = Table.SelectColumns(Expanded, {"pid","sessionId","cwd","version","kind","entrypoint","name","status","startedAtMs"}),
+				    AddedStartedAt = Table.AddColumn(RemovedHelpers, "StartedAt", each try #datetime(1970,1,1,0,0,0) + #duration(0,0,0,[startedAtMs]/1000) otherwise null),
+				    RemovedMs = Table.RemoveColumns(AddedStartedAt, {"startedAtMs"}),
+				    ChangedTypes = Table.TransformColumnTypes(RemovedMs, {
+				        {"pid", Int64.Type}, {"sessionId", type text}, {"cwd", type text}, {"version", type text},
+				        {"kind", type text}, {"entrypoint", type text}, {"name", type text},
+				        {"status", type text}, {"StartedAt", type datetime}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_ResultType = Table
+

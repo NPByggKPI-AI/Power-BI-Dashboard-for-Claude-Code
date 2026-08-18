@@ -1,0 +1,183 @@
+table history
+	lineageTag: 9574420d-1b9b-4dd6-87c6-4efa7b6a9291
+
+	/// Total number of prompts submitted, across all sessions and projects.
+	measure 'Total Prompts' = COUNTROWS(history)
+		formatString: #,0
+		displayFolder: Usage Measures
+		lineageTag: 14b17858-c507-415d-aec6-891054d556bf
+
+	/// Count of distinct sessions represented in the prompt history log.
+	measure 'Distinct Sessions' = DISTINCTCOUNT(history[sessionId])
+		formatString: #,0
+		displayFolder: Usage Measures
+		lineageTag: dd56eca0-b935-447d-ae99-b9aaae49629c
+
+	/// Count of distinct projects (working directories) represented in the prompt history log.
+	measure 'Distinct Projects' = DISTINCTCOUNT(history[project])
+		formatString: #,0
+		displayFolder: Usage Measures
+		lineageTag: c220bd03-43f8-40d6-a193-25e66a1b68b9
+
+	column display
+		dataType: string
+		lineageTag: 0ef14cd7-9bd1-4977-ad13-cb27ab073c33
+		summarizeBy: none
+		sourceColumn: display
+
+		annotation SummarizationSetBy = Automatic
+
+	column id1
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 68e8314d-c30f-46ee-b1b6-f56171520ffe
+		summarizeBy: sum
+		sourceColumn: id1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column type1
+		dataType: string
+		lineageTag: 2a195a3c-4ca8-44cc-8bad-6f47a4a34f48
+		summarizeBy: none
+		sourceColumn: type1
+
+		annotation SummarizationSetBy = Automatic
+
+	column content1
+		dataType: string
+		lineageTag: df2d6a45-e711-4a14-a08c-7dd4c066c473
+		summarizeBy: none
+		sourceColumn: content1
+
+		annotation SummarizationSetBy = Automatic
+
+	column id2
+		dataType: string
+		isHidden
+		lineageTag: 72ea33ea-122a-43db-85aa-8a8dec222665
+		summarizeBy: none
+		sourceColumn: id2
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column type2
+		dataType: string
+		lineageTag: d5a3c8f4-2a5a-4781-a1d6-5b1eb192fa2c
+		summarizeBy: none
+		sourceColumn: type2
+
+		annotation SummarizationSetBy = Automatic
+
+	column content2
+		dataType: string
+		lineageTag: 3b2741fa-3a2e-4f59-babb-2a6ec6d70127
+		summarizeBy: none
+		sourceColumn: content2
+
+		annotation SummarizationSetBy = Automatic
+
+	column timestamp
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e12bf54f-8b0d-49d6-a7bf-1556e382a1df
+		summarizeBy: sum
+		sourceColumn: timestamp
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column project
+		dataType: string
+		lineageTag: aeba8483-85fe-4bf8-b50a-6668d3f5d462
+		summarizeBy: none
+		sourceColumn: project
+
+		annotation SummarizationSetBy = Automatic
+
+	column sessionId
+		dataType: string
+		lineageTag: b10a1a3d-8bb9-428f-a285-789a2a42d5bd
+		summarizeBy: none
+		sourceColumn: sessionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column TimeDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: babf6790-de3f-4330-9f4e-eae467000c61
+		summarizeBy: none
+		sourceColumn: TimeDate
+
+		variation Variation
+			isDefault
+			relationship: a31608bb-1eb5-4af3-a373-224e5b03c6ec
+			defaultHierarchy: LocalDateTable_baede229-4a20-47a0-a172-63711fce80ad.'Date Hierarchy'
+
+		annotation SummarizationSetBy = User
+
+	column folder
+		dataType: string
+		lineageTag: 00db5202-8347-4685-aed2-4514defe66d1
+		summarizeBy: none
+		sourceColumn: folder
+
+		annotation SummarizationSetBy = Automatic
+
+	column link
+		dataType: string
+		lineageTag: dbf6ed69-b80e-4159-b1cb-f60d022972e3
+		dataCategory: WebUrl
+		summarizeBy: none
+		sourceColumn: link
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 0ee56dfc-7941-4a28-8905-2bb75d149cba
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: d7cc63a1-7bf1-4990-9383-75564f2d67d6
+			defaultHierarchy: LocalDateTable_8ecdee9a-542a-4d0a-9ecd-03dc35fface1.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition history = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromColumns({Lines.FromBinary(File.Contents(ClaudeHomePath & "\history.jsonl"), null, null)}),
+				    #"Transformed Column" = Table.TransformColumns(Source, {"Column1", Json.Document}),
+				    #"Expanded Column1" = Table.ExpandRecordColumn(#"Transformed Column", "Column1", {"display", "pastedContents", "timestamp", "project", "sessionId"}, {"display", "pastedContents", "timestamp", "project", "sessionId"}),
+				    #"Expanded pastedContents" = Table.ExpandRecordColumn(#"Expanded Column1", "pastedContents", {"1", "2"}, {"pastedContents.1", "pastedContents.2"}),
+				    #"Expanded pastedContents.1" = Table.ExpandRecordColumn(#"Expanded pastedContents", "pastedContents.1", {"id", "type", "content"}, {"id1", "type1", "content1"}),
+				    #"Expanded pastedContents.2" = Table.ExpandRecordColumn(#"Expanded pastedContents.1", "pastedContents.2", {"id", "type", "content"}, {"id2", "type2", "content2"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded pastedContents.2",{{"display", type text}, {"id1", Int64.Type}, {"type1", type text}, {"content1", type text}, {"id2", type any}, {"type2", type any}, {"content2", type any}, {"timestamp", Int64.Type}, {"project", type text}, {"sessionId", type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "TimeDate", each #datetime(1970, 1, 1, 0, 0, 0) + #duration(0, 0, 0, [timestamp]/ 1000)),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Date", each Date.From(#datetime(1970, 1, 1, 0, 0, 0) + #duration(0, 0, 0, [timestamp] / 1000))),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom1",{{"TimeDate", type datetime}, {"Date", type date}}),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Changed Type1", "project", "link"),
+				    #"Split Column by Delimiter" = Table.SplitColumn(#"Duplicated Column", "project", Splitter.SplitTextByEachDelimiter({"\"}, QuoteStyle.Csv, true), {"folder", "project"}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"folder", type text}, {"project", type text}})
+				in
+				    #"Changed Type2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

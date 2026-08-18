@@ -1,0 +1,43 @@
+table 'settings marketplaces'
+	lineageTag: 0549b146-b5a2-4ac5-81f1-5011e3339b1d
+
+	column Name
+		dataType: string
+		lineageTag: f5fa39b1-0178-4548-9ced-0a4d61d0a245
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column source
+		dataType: string
+		lineageTag: a04f872c-b319-47b6-afb7-a87e6e7b946a
+		summarizeBy: none
+		sourceColumn: source
+
+		annotation SummarizationSetBy = Automatic
+
+	column repo
+		dataType: string
+		lineageTag: b4aef9fc-c693-4728-a817-29e8e312bc37
+		summarizeBy: none
+		sourceColumn: repo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'settings marketplaces' = m
+		mode: import
+		source =
+				let
+				    Source = settings,
+				    extraKnownMarketplaces = Source{0}[extraKnownMarketplaces],
+				    #"Converted to Table" = Record.ToTable(extraKnownMarketplaces),
+				    #"Expanded Value" = Table.ExpandRecordColumn(#"Converted to Table", "Value", {"source"}, {"source"}),
+				    #"Expanded source" = Table.ExpandRecordColumn(#"Expanded Value", "source", {"source", "repo"}, {"source", "repo"})
+				in
+				    #"Expanded source"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

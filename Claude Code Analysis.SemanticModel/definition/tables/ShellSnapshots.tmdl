@@ -1,0 +1,76 @@
+table ShellSnapshots
+	lineageTag: a0763d7b-fcd8-4540-bb13-7f75c883ff9a
+
+	/// Count of CLI shell sessions started, based on shell-snapshot filenames.
+	measure 'Shell Session Count' = COUNTROWS(ShellSnapshots)
+		formatString: #,0
+		displayFolder: Environment Measures
+		lineageTag: bea483c1-acbe-47f5-bd9c-713cdbc22579
+
+	column shellType
+		dataType: string
+		lineageTag: 45dbbb17-34bf-47cf-b185-269ffe007c7c
+		summarizeBy: none
+		sourceColumn: shellType
+
+		annotation SummarizationSetBy = Automatic
+
+	column SnapshotTimestamp
+		dataType: dateTime
+		lineageTag: 40f74327-515b-43e6-ba67-30b6ccf8cd92
+		summarizeBy: none
+		sourceColumn: SnapshotTimestamp
+
+		variation Variation
+			isDefault
+			relationship: 9f79438c-30b5-48c6-9e6b-9df1d285d33f
+			defaultHierarchy: LocalDateTable_d8fe3d55-7889-4fcc-bbc0-ec11c3761690.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column SnapshotDate
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 0d57c696-888b-4839-bfe8-4c75bd6f41f7
+		summarizeBy: none
+		sourceColumn: SnapshotDate
+
+		variation Variation
+			isDefault
+			relationship: d0353d82-a5cf-4b71-8beb-00fb1bd3569b
+			defaultHierarchy: LocalDateTable_f479dd65-0589-4390-be83-24b229c34c4d.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ShellSnapshots = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files(ClaudeHomePath & "\shell-snapshots"),
+				    FilteredExt = Table.SelectRows(Source, each [Extension] = ".sh"),
+				    AddedFields = Table.AddColumn(FilteredExt, "Fields", each
+				        let
+				            nameNoExt = Text.BeforeDelimiter([Name], ".sh"),
+				            parts = Text.Split(nameNoExt, "-")
+				        in [
+				            shellType = parts{1},
+				            epochMs = try Number.FromText(parts{2}) otherwise null
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedFields, "Fields", {"shellType","epochMs"}),
+				    RemovedHelpers = Table.SelectColumns(Expanded, {"shellType","epochMs"}),
+				    AddedTimestamp = Table.AddColumn(RemovedHelpers, "SnapshotTimestamp", each try #datetime(1970,1,1,0,0,0) + #duration(0,0,0,[epochMs]/1000) otherwise null),
+				    RemovedMs = Table.RemoveColumns(AddedTimestamp, {"epochMs"}),
+				    AddedDate = Table.AddColumn(RemovedMs, "SnapshotDate", each Date.From([SnapshotTimestamp])),
+				    ChangedTypes = Table.TransformColumnTypes(AddedDate, {
+				        {"shellType", type text}, {"SnapshotTimestamp", type datetime}, {"SnapshotDate", type date}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

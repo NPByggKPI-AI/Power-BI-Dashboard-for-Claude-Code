@@ -1,0 +1,54 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "aa11bb22cc33dd44ee02",
+  "position": {
+    "x": 607,
+    "y": 24,
+    "z": 2000,
+    "height": 96,
+    "width": 170,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SessionEvents"
+                    }
+                  },
+                  "Property": "Total Input Tokens"
+                }
+              },
+              "queryRef": "SessionEvents.Total Input Tokens",
+              "nativeQueryRef": "Total Input Tokens",
+              "displayName": "Total Input Tokens"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

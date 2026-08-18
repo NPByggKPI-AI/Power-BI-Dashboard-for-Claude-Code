@@ -1,0 +1,78 @@
+table Marketplaces
+	lineageTag: 102a300d-0abd-4a22-b038-d5e8b1554b1e
+
+	/// Count of known plugin marketplaces.
+	measure 'Marketplace Count' = COUNTROWS(Marketplaces)
+		formatString: #,0
+		displayFolder: Environment Measures
+		lineageTag: 663790b2-f1c6-45ac-a881-5e78b72064d2
+
+	column marketplaceName
+		dataType: string
+		lineageTag: 56255b7a-3db6-46d1-b8d1-db67baa3e2c7
+		sourceColumn: marketplaceName
+
+	column sourceType
+		dataType: string
+		lineageTag: 445b6eb6-490c-4956-9d5e-e3534c81aa80
+		sourceColumn: sourceType
+
+	column sourceLocation
+		dataType: string
+		lineageTag: e8973a0c-645a-482b-bc94-48eab7bd28d2
+		sourceColumn: sourceLocation
+
+	column installLocation
+		dataType: string
+		lineageTag: afd74bcf-1120-420b-95ee-449b345e7c26
+		sourceColumn: installLocation
+
+	column LastUpdated
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 0adc7cd0-b15d-47bb-9941-82906d4077f4
+		sourceColumn: LastUpdated
+
+		variation Variation
+			isDefault
+			relationship: 8f3a1c20-4b6d-4e91-9c2a-7d1e5f80300e
+			defaultHierarchy: LocalDateTable_Marketplaces_LastUpdated.'Date Hierarchy'
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	partition Marketplaces = m
+		mode: import
+		source =
+				let
+				    Source = Json.Document(File.Contents(ClaudeHomePath & "\plugins\known_marketplaces.json")),
+				    AsTable = Record.ToTable(Source),
+				    AddedFields = Table.AddColumn(AsTable, "Fields", each
+				        let
+				            rec = [Value],
+				            src = Record.FieldOrDefault(rec, "source", null),
+				            srcIsRecord = src <> null and Value.Is(src, type record),
+				            srcType = if srcIsRecord then Record.FieldOrDefault(src, "source", null) else null,
+				            repo = if srcIsRecord then Record.FieldOrDefault(src, "repo", null) else null,
+				            path = if srcIsRecord then Record.FieldOrDefault(src, "path", null) else null,
+				            url = if srcIsRecord then Record.FieldOrDefault(src, "url", null) else null,
+				            srcLocation = if repo <> null then repo else if url <> null then url else if path <> null then path else null
+				        in [
+				            sourceType = srcType,
+				            sourceLocation = srcLocation,
+				            installLocation = Record.FieldOrDefault(rec, "installLocation", null),
+				            lastUpdatedText = Record.FieldOrDefault(rec, "lastUpdated", null)
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedFields, "Fields", {"sourceType","sourceLocation","installLocation","lastUpdatedText"}),
+				    RenamedKey = Table.RenameColumns(Expanded, {{"Name", "marketplaceName"}}),
+				    AddedLastUpdated = Table.AddColumn(RenamedKey, "LastUpdated", each try DateTimeZone.RemoveZone(DateTimeZone.From([lastUpdatedText])) otherwise null),
+				    RemovedHelper = Table.RemoveColumns(AddedLastUpdated, {"Value", "lastUpdatedText"}),
+				    ChangedTypes = Table.TransformColumnTypes(RemovedHelper, {
+				        {"marketplaceName", type text}, {"sourceType", type text}, {"sourceLocation", type text},
+				        {"installLocation", type text}, {"LastUpdated", type datetime}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,51 @@
+table Plans
+	lineageTag: 216a48a7-cab1-4952-974d-6f48eac4c0d9
+
+	column Title
+		dataType: string
+		lineageTag: 121c59dd-334c-4aac-978a-43882cde06f5
+		summarizeBy: none
+		sourceColumn: Title
+
+		annotation SummarizationSetBy = Automatic
+
+	column Content
+		dataType: string
+		lineageTag: d60b64d3-9388-4f2e-aed6-ba5f12d03e00
+		summarizeBy: none
+		sourceColumn: Content
+
+		annotation SummarizationSetBy = Automatic
+
+	column FileModified
+		dataType: dateTime
+		lineageTag: f642a4cc-1db1-4198-aa3d-0fcdafaa9485
+		summarizeBy: none
+		sourceColumn: FileModified
+
+		variation Variation
+			isDefault
+			relationship: d290c262-3983-4a43-83ca-0098fe72174d
+			defaultHierarchy: LocalDateTable_72b209e0-0040-43c2-bcf5-ad2bd44cdedb.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Plans = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files(ClaudeHomePath & "\plans"),
+				    FilteredExt = Table.SelectRows(Source, each [Extension] = ".md"),
+				    AddedContentText = Table.AddColumn(FilteredExt, "ContentText", each Text.FromBinary([Content])),
+				    AddedTitle = Table.AddColumn(AddedContentText, "Title", each Text.BeforeDelimiter([Name], ".md")),
+				    RemovedHelpers = Table.SelectColumns(AddedTitle, {"Title","ContentText","Date modified"}),
+				    RenamedDate = Table.RenameColumns(RemovedHelpers, {{"Date modified", "FileModified"}}),
+				    RenamedContent = Table.RenameColumns(RenamedDate, {{"ContentText", "Content"}}),
+				    ChangedTypes = Table.TransformColumnTypes(RenamedContent, {
+				        {"Title", type text}, {"Content", type text}, {"FileModified", type datetime}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_ResultType = Table
+

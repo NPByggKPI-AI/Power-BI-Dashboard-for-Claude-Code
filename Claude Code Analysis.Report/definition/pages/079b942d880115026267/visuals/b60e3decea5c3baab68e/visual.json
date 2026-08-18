@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "b60e3decea5c3baab68e",
+  "position": {
+    "x": 1450,
+    "y": 24,
+    "z": 3000,
+    "height": 96,
+    "width": 130,
+    "tabOrder": 9000
+  },
+  "visual": {
+    "visualType": "card",
+    "autoSelectVisualType": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "history"
+                    }
+                  },
+                  "Property": "Distinct Sessions"
+                }
+              },
+              "queryRef": "history.Distinct Sessions",
+              "nativeQueryRef": "Sessions",
+              "displayName": "Sessions"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

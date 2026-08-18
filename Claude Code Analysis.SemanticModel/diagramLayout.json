@@ -1,0 +1,269 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 474.94527061950737,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 568,
+            "y": 0
+          },
+          "nodeIndex": "history",
+          "nodeLineageTag": "9574420d-1b9b-4dd6-87c6-4efa7b6a9291",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 2
+          },
+          "nodeIndex": "settings",
+          "nodeLineageTag": "297d2b7a-d23f-4d4b-bb69-4834b6c3004d",
+          "size": {
+            "height": 414,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 283,
+            "y": 13.000000000000028
+          },
+          "nodeIndex": "settings marketplaces",
+          "nodeLineageTag": "0549b146-b5a2-4ac5-81f1-5011e3339b1d",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 506.01462547461438,
+            "y": 489.56612333358737
+          },
+          "nodeIndex": "SessionEvents",
+          "nodeLineageTag": "6343817b-e486-4f1b-a5d1-7987d38af417",
+          "size": {
+            "height": 322.12141607972944,
+            "width": 262.44182067393785
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 492.9532626310729
+          },
+          "nodeIndex": "ModelRates",
+          "nodeLineageTag": "702b95d4-994d-45d3-b127-f6e683de1686",
+          "size": {
+            "height": 236.40092699999991,
+            "width": 331.43585499999995
+          },
+          "zIndex": 17
+        },
+        {
+          "location": {
+            "x": 874.44689701014443,
+            "y": 0
+          },
+          "nodeIndex": "ToolCalls",
+          "nodeLineageTag": "0951e507-dd8c-4733-8a6c-b032d45b805e",
+          "size": {
+            "height": 264.57804999999996,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1204.2698303181558,
+            "y": 6.2765609492284113
+          },
+          "nodeIndex": "Tasks",
+          "nodeLineageTag": "18f9d688-0bff-4e2e-9aef-2a78d2b37319",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1565.6947865972086,
+            "y": 0
+          },
+          "nodeIndex": "Teams",
+          "nodeLineageTag": "53e604e4-62ef-4427-b2b4-3ea33ecdd9ff",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1922.3794394306055,
+            "y": 0
+          },
+          "nodeIndex": "TeamMembers",
+          "nodeLineageTag": "eff3e0d1-cf66-4118-8dd3-63ae96f17cf3",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 1162.5203367705756,
+            "y": 845.16723331591754
+          },
+          "nodeIndex": "Plugins",
+          "nodeLineageTag": "1c41317f-64f4-4919-9259-5db6219e91e7",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 1466.9186141872733,
+            "y": 839.10929689921909
+          },
+          "nodeIndex": "Marketplaces",
+          "nodeLineageTag": "102a300d-0abd-4a22-b038-d5e8b1554b1e",
+          "size": {
+            "height": 251.37526900000012,
+            "width": 234
+          },
+          "zIndex": 18
+        },
+        {
+          "location": {
+            "x": 1925.8651226581251,
+            "y": 322.89375620308635
+          },
+          "nodeIndex": "FileHistoryEvents",
+          "nodeLineageTag": "04bcf2e8-7d0c-4ee8-9f55-12f63b6078d1",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 1830.6519944877587,
+            "y": 836.64392568184439
+          },
+          "nodeIndex": "LiveSessions",
+          "nodeLineageTag": "7d69d9c1-61b4-4729-97d4-239180218d68",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 106.16086870186621,
+            "y": 831.44867334487537
+          },
+          "nodeIndex": "LiveIDEConnections",
+          "nodeLineageTag": "33099e04-544e-4af6-bb7c-714fb4c3e004",
+          "size": {
+            "height": 226.57341500000007,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 508.1381109643346,
+            "y": 876.22764096804178
+          },
+          "nodeIndex": "ShellSnapshots",
+          "nodeLineageTag": "a0763d7b-fcd8-4540-bb13-7f75c883ff9a",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 1898.9106773237754,
+            "y": 565.58852389169374
+          },
+          "nodeIndex": "SessionEnvPlugins",
+          "nodeLineageTag": "264dc0d1-0a92-4510-87bd-8ed351f01232",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 828.3482574497516,
+            "y": 891.788770265146
+          },
+          "nodeIndex": "Plans",
+          "nodeLineageTag": "216a48a7-cab1-4952-974d-6f48eac4c0d9",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 16
+        },
+        {
+          "location": {
+            "x": 1012.7410524877594,
+            "y": 449.2409581579588
+          },
+          "nodeIndex": "Sessions",
+          "nodeLineageTag": "50ed686c-6523-42a8-b3cb-6599edcc15e0",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 2209.8651226581251,
+            "y": 446.58361665795883
+          },
+          "nodeIndex": "Projects",
+          "nodeLineageTag": "aef93f90-b498-40ed-836a-b5dc85714853",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 70.955543900968877,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

@@ -1,0 +1,114 @@
+table Tasks
+	lineageTag: 18f9d688-0bff-4e2e-9aef-2a78d2b37319
+
+	/// Count of subagent tasks tracked via TaskCreate/TaskUpdate.
+	measure 'Task Count' = COUNTROWS(Tasks)
+		formatString: #,0
+		displayFolder: Orchestration Measures
+		lineageTag: e5fe09ed-b618-43e0-a7fc-61ca5ba96d7a
+
+	/// Share of tracked tasks with status = completed.
+	measure 'Task Completion Rate' = DIVIDE(CALCULATE(COUNTROWS(Tasks), Tasks[status] = "completed"), COUNTROWS(Tasks))
+		formatString: 0.0%
+		displayFolder: Orchestration Measures
+		lineageTag: 4c59b6df-faa4-4b3c-a3ae-65e7f0afa417
+
+	/// Average number of tasks tracked per session that has at least one task.
+	measure 'Avg Tasks per Session' = DIVIDE(COUNTROWS(Tasks), DISTINCTCOUNT(Tasks[sessionId8]))
+		formatString: #,0.0
+		displayFolder: Orchestration Measures
+		lineageTag: 3bc10ac3-aaa1-4925-89d8-307943b774a4
+
+	column sessionId8
+		dataType: string
+		isHidden
+		lineageTag: 99bbe99f-1521-4188-82b9-f47e7d09d8fd
+		sourceColumn: sessionId8
+
+	column taskId
+		dataType: string
+		lineageTag: 80ce082e-79b2-45f0-8138-cae16a051c78
+		sourceColumn: taskId
+
+	column subject
+		dataType: string
+		lineageTag: 53dd7dca-f5c3-4981-91be-ebe5d1a84712
+		sourceColumn: subject
+
+	column description
+		dataType: string
+		lineageTag: 157d55a3-bfe1-4cca-ba47-3ac98033c629
+		sourceColumn: description
+
+	column status
+		dataType: string
+		lineageTag: 6f77f768-1d35-4f35-8c2e-73ac86794334
+		sourceColumn: status
+
+	column blocksCount
+		dataType: int64
+		lineageTag: 9d076341-7127-48dd-9160-fe48e009c01f
+		summarizeBy: sum
+		sourceColumn: blocksCount
+
+	column blockedByCount
+		dataType: int64
+		lineageTag: 01463d9f-c70f-4fd7-9a8a-2948c8c77bec
+		summarizeBy: sum
+		sourceColumn: blockedByCount
+
+	column blocksIds
+		dataType: string
+		lineageTag: 0e2f72e6-9d6c-4ce5-8b7a-860cbde324d6
+		sourceColumn: blocksIds
+
+	column blockedByIds
+		dataType: string
+		lineageTag: 111b986f-c9ba-4899-85d5-fe00ac871501
+		sourceColumn: blockedByIds
+
+	partition Tasks = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files(ClaudeHomePath & "\tasks"),
+				    FilteredExtension = Table.SelectRows(Source, each [Extension] = ".json"),
+				    AddedContentText = Table.AddColumn(FilteredExtension, "ContentText", each Text.FromBinary([Content])),
+				    AddedParsed = Table.AddColumn(AddedContentText, "Record", each try Json.Document([ContentText]) otherwise null),
+				    ValidRecords = Table.SelectRows(AddedParsed, each [Record] <> null and Value.Is([Record], type record)),
+				    AddedSessionId8 = Table.AddColumn(ValidRecords, "sessionId8", each
+				        let
+				            trimmed = Text.TrimEnd([Folder Path], "\"),
+				            lastSegment = Text.AfterDelimiter(trimmed, "\", {0, RelativePosition.FromEnd})
+				        in
+				            Text.AfterDelimiter(lastSegment, "session-")
+				    ),
+				    AddedFields = Table.AddColumn(AddedSessionId8, "Fields", each
+				        let
+				            rec = [Record],
+				            blocksList = Record.FieldOrDefault(rec, "blocks", null),
+				            blockedByList = Record.FieldOrDefault(rec, "blockedBy", null),
+				            blocksListSafe = if blocksList <> null and Value.Is(blocksList, type list) then blocksList else {},
+				            blockedByListSafe = if blockedByList <> null and Value.Is(blockedByList, type list) then blockedByList else {}
+				        in [
+				            taskId = Record.FieldOrDefault(rec, "id", null),
+				            subject = Record.FieldOrDefault(rec, "subject", null),
+				            description = Record.FieldOrDefault(rec, "description", null),
+				            status = Record.FieldOrDefault(rec, "status", null),
+				            blocksCount = List.Count(blocksListSafe),
+				            blockedByCount = List.Count(blockedByListSafe),
+				            blocksIds = Text.Combine(List.Transform(blocksListSafe, each Text.From(_)), ", "),
+				            blockedByIds = Text.Combine(List.Transform(blockedByListSafe, each Text.From(_)), ", ")
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedFields, "Fields", {"taskId","subject","description","status","blocksCount","blockedByCount","blocksIds","blockedByIds"}),
+				    RemovedHelpers = Table.SelectColumns(Expanded, {"sessionId8","taskId","subject","description","status","blocksCount","blockedByCount","blocksIds","blockedByIds"}),
+				    ChangedTypes = Table.TransformColumnTypes(RemovedHelpers, {
+				        {"sessionId8", type text}, {"taskId", type text}, {"subject", type text}, {"description", type text},
+				        {"status", type text}, {"blocksCount", Int64.Type}, {"blockedByCount", Int64.Type}, {"blocksIds", type text}, {"blockedByIds", type text}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_ResultType = Table
+

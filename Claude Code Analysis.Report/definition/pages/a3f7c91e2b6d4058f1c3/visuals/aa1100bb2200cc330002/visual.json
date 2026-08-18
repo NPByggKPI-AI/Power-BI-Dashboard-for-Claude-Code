@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "aa1100bb2200cc330002",
+  "position": {
+    "x": 40,
+    "y": 180,
+    "z": 1001,
+    "height": 50,
+    "width": 1840,
+    "tabOrder": 1001
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Usage, performance, orchestration & environment analytics for Claude Code, built from your local ~/.claude data",
+                    "textStyle": {
+                      "fontSize": "20pt",
+                      "color": "#546E7A"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

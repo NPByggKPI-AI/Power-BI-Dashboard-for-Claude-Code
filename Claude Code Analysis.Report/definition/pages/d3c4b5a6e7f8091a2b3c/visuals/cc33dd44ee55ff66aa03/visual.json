@@ -1,0 +1,45 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "cc33dd44ee55ff66aa03",
+  "position": {
+    "x": 860,
+    "y": 24,
+    "z": 3000,
+    "height": 96,
+    "width": 190,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "card",
+    "autoSelectVisualType": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Plans"
+                        }
+                      },
+                      "Property": "Title"
+                    }
+                  },
+                  "Function": 2
+                }
+              },
+              "queryRef": "Count(Plans.Title)",
+              "nativeQueryRef": "Plans",
+              "displayName": "Plans"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

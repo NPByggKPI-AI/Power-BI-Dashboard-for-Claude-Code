@@ -1,0 +1,16 @@
+# Power BI Desktop regenerates the .pbi/ folder every time this project is opened.
+# It is NOT safe to publish. It contains:
+#   cache.abf             - a complete copy of every row you have loaded, including
+#                           your prompt text, file paths, project names and session data
+#   unappliedChanges.json - unsaved model edits, and your Windows username
+#   localSettings.json    - DPAPI-encrypted data source credential bindings
+# Power BI Desktop's own default ignores only two files inside this folder.
+# The whole folder is ignored here on purpose - do not narrow this.
+**/.pbi/
+
+# Power BI Desktop temp / lock artifacts
+*.pbix.tmp
+~$*
+
+# Build output produced by Release-Kit.ps1
+/dist/

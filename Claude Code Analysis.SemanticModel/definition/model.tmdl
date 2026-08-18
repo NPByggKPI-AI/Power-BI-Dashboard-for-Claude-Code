@@ -1,0 +1,58 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: nb-NO
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode","MCP-PBIModeling"]
+
+annotation PBI_QueryOrder = ["history","settings","settings marketplaces","ModelRates","Tasks","Teams","TeamMembers","Plugins","Marketplaces","FileHistoryEvents","LiveSessions","LiveIDEConnections","ShellSnapshots","SessionEnvPlugins","Plans","ClaudeHomePath","Projects","SessionEvents","ToolCalls"]
+
+ref table history
+ref table DateTableTemplate_39a4a45d-7214-46d4-9ded-d888793f21c0
+ref table LocalDateTable_baede229-4a20-47a0-a172-63711fce80ad
+ref table LocalDateTable_8ecdee9a-542a-4d0a-9ecd-03dc35fface1
+ref table settings
+ref table 'settings marketplaces'
+ref table SessionEvents
+ref table LocalDateTable_0f7b48c7-1878-4dee-97bb-dc0aa3808c17
+ref table LocalDateTable_6b9bbdb2-acee-447f-9812-f411b209337a
+ref table ModelRates
+ref table ToolCalls
+ref table Tasks
+ref table Teams
+ref table TeamMembers
+ref table Plugins
+ref table Marketplaces
+ref table FileHistoryEvents
+ref table LiveSessions
+ref table LiveIDEConnections
+ref table ShellSnapshots
+ref table SessionEnvPlugins
+ref table Plans
+ref table Sessions
+ref table LocalDateTable_f4d592fc-14e2-4ec3-a798-ae44dc081cbf
+ref table LocalDateTable_f479dd65-0589-4390-be83-24b229c34c4d
+ref table LocalDateTable_Marketplaces_LastUpdated
+ref table LocalDateTable_101ca23f-1b49-4d28-bbdf-0cab7e896053
+ref table Projects
+ref table LocalDateTable_6c28e2e7-7195-4097-96c7-5dbfb07f4c65
+ref table LocalDateTable_00813db3-a8eb-450d-ba5d-4c6d81fb46ed
+ref table LocalDateTable_5b7cd8f9-a494-4add-9a47-2cb53ac0e40e
+ref table LocalDateTable_3b84e7f6-62bb-4380-b2fb-fb1c96222059
+ref table LocalDateTable_601cc372-2e20-473d-8d75-523d0d43ac67
+ref table LocalDateTable_08dc214e-5d34-471b-86c6-2c0f3e43952a
+ref table LocalDateTable_d8fe3d55-7889-4fcc-bbc0-ec11c3761690
+ref table LocalDateTable_72b209e0-0040-43c2-bcf5-ad2bd44cdedb
+ref table LocalDateTable_3cd6937b-9750-4177-acc7-fe1515dcc8d7
+ref table LocalDateTable_c9bffaca-1587-4bb8-8765-bd23ea6960eb
+ref table LocalDateTable_7cea8989-62f4-49df-9cc8-f0b5953eb711
+ref table LocalDateTable_a9091cb2-2bed-49b2-b1bb-1610305e1ec6
+ref table LocalDateTable_fed30fbd-07ae-4ac0-b0b2-af19b9f6d2a2
+
+ref cultureInfo en-US
+

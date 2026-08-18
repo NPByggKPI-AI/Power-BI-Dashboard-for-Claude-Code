@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "4c2e8a916fb7053dce1a",
+  "position": {
+    "x": 1750,
+    "y": 24,
+    "z": 13000,
+    "height": 96,
+    "width": 130,
+    "tabOrder": 13000
+  },
+  "visual": {
+    "visualType": "card",
+    "autoSelectVisualType": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FileHistoryEvents"
+                    }
+                  },
+                  "Property": "File Edit Count"
+                }
+              },
+              "queryRef": "FileHistoryEvents.File Edit Count",
+              "nativeQueryRef": "File Edits",
+              "displayName": "File Edits"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "75c527080e9e52346b10",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FileHistoryEvents"
+              }
+            },
+            "Property": "File Edit Count"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

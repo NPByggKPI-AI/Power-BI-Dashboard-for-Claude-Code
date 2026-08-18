@@ -1,0 +1,72 @@
+table SessionEnvPlugins
+	lineageTag: 264dc0d1-0a92-4510-87bd-8ed351f01232
+
+	column sessionId
+		dataType: string
+		isHidden
+		lineageTag: 91b3ead5-bf48-4223-8313-30fdfd686cf2
+		summarizeBy: none
+		sourceColumn: sessionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column pluginName
+		dataType: string
+		lineageTag: aedb42da-e693-46c7-b3ca-dae1fd97fed8
+		summarizeBy: none
+		sourceColumn: pluginName
+
+		annotation SummarizationSetBy = Automatic
+
+	column marketplaceName
+		dataType: string
+		lineageTag: a4f26909-d01e-48a1-abd0-c89335c495dc
+		summarizeBy: none
+		sourceColumn: marketplaceName
+
+		annotation SummarizationSetBy = Automatic
+
+	column pluginVersion
+		dataType: string
+		lineageTag: 6f7d1537-0271-4dc8-ad2d-195516e5cf86
+		summarizeBy: none
+		sourceColumn: pluginVersion
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SessionEnvPlugins = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files(ClaudeHomePath & "\session-env"),
+				    FilteredExt = Table.SelectRows(Source, each [Extension] = ".sh"),
+				    AddedContentText = Table.AddColumn(FilteredExt, "ContentText", each Text.FromBinary([Content])),
+				    AddedSessionId = Table.AddColumn(AddedContentText, "sessionId", each
+				        let
+				            trimmed = Text.TrimEnd([Folder Path], "\"),
+				            lastSegment = Text.AfterDelimiter(trimmed, "\", {0, RelativePosition.FromEnd})
+				        in
+				            lastSegment
+				    ),
+				    qc = Character.FromNumber(34),
+				    AddedFields = Table.AddColumn(AddedSessionId, "Fields", each
+				        let
+				            rootPath = try Text.BetweenDelimiters([ContentText], "CLAUDE_PLUGIN_ROOT=" & qc, qc) otherwise null,
+				            segments = if rootPath <> null then Text.Split(Text.TrimEnd(rootPath, "\"), "\") else {},
+				            segCount = List.Count(segments)
+				        in [
+				            pluginName = if segCount >= 2 then segments{segCount - 2} else null,
+				            marketplaceName = if segCount >= 3 then segments{segCount - 3} else null,
+				            pluginVersion = if segCount >= 1 then segments{segCount - 1} else null
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedFields, "Fields", {"pluginName","marketplaceName","pluginVersion"}),
+				    RemovedHelpers = Table.SelectColumns(Expanded, {"sessionId","pluginName","marketplaceName","pluginVersion"}),
+				    ChangedTypes = Table.TransformColumnTypes(RemovedHelpers, {
+				        {"sessionId", type text}, {"pluginName", type text}, {"marketplaceName", type text}, {"pluginVersion", type text}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_ResultType = Table
+

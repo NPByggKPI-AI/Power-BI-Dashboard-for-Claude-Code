@@ -1,0 +1,259 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "dd44ee55ff66aa77bb01",
+  "position": {
+    "x": 40.399002493765586,
+    "y": 912,
+    "z": 14000,
+    "height": 142.7431421446384,
+    "width": 1611.5012468827931,
+    "tabOrder": 14000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ModelRates"
+                    }
+                  },
+                  "Property": "Model"
+                }
+              },
+              "queryRef": "ModelRates.Model",
+              "nativeQueryRef": "Model"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ModelRates"
+                    }
+                  },
+                  "Property": "InputRatePerMTok"
+                }
+              },
+              "queryRef": "ModelRates.InputRatePerMTok",
+              "nativeQueryRef": "InputRatePerMTok",
+              "displayName": "Input $/MTok"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ModelRates"
+                    }
+                  },
+                  "Property": "OutputRatePerMTok"
+                }
+              },
+              "queryRef": "ModelRates.OutputRatePerMTok",
+              "nativeQueryRef": "OutputRatePerMTok",
+              "displayName": "Output $/MTok"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ModelRates"
+                    }
+                  },
+                  "Property": "CacheWriteRatePerMTok"
+                }
+              },
+              "queryRef": "ModelRates.CacheWriteRatePerMTok",
+              "nativeQueryRef": "CacheWriteRatePerMTok",
+              "displayName": "Cache Write $/MTok"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ModelRates"
+                    }
+                  },
+                  "Property": "CacheReadRatePerMTok"
+                }
+              },
+              "queryRef": "ModelRates.CacheReadRatePerMTok",
+              "nativeQueryRef": "CacheReadRatePerMTok",
+              "displayName": "Cache Read $/MTok"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ModelRates"
+                    }
+                  },
+                  "Property": "Notes"
+                }
+              },
+              "queryRef": "ModelRates.Notes",
+              "nativeQueryRef": "Notes"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "ModelRates"
+                  }
+                },
+                "Property": "Notes"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "180D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "ModelRates.Model"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "120D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "ModelRates.InputRatePerMTok"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "120D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "ModelRates.OutputRatePerMTok"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "140D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "ModelRates.CacheWriteRatePerMTok"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "147.60488529982004D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "ModelRates.CacheReadRatePerMTok"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "873.203941671231D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "ModelRates.Notes"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Estimated prices based on Claude Platform API (https://claude.com/pricing#api)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,107 @@
+table Teams
+	lineageTag: 53e604e4-62ef-4427-b2b4-3ea33ecdd9ff
+
+	/// Count of multi-agent team configurations recorded.
+	measure 'Team Count' = COUNTROWS(Teams)
+		formatString: #,0
+		displayFolder: Orchestration Measures
+		lineageTag: 150554f3-63d8-4e2e-b181-5fd1c6fe45c9
+
+	/// Average number of members per team.
+	measure 'Avg Team Size' = AVERAGE(Teams[memberCount])
+		formatString: #,0.0
+		displayFolder: Orchestration Measures
+		lineageTag: 30a82680-d749-4015-87bf-bad175081336
+
+	column teamName
+		dataType: string
+		lineageTag: c92aab53-4c3b-4ce4-a51a-08395ce66ec0
+		summarizeBy: none
+		sourceColumn: teamName
+
+		annotation SummarizationSetBy = Automatic
+
+	column leadAgentId
+		dataType: string
+		lineageTag: 2ac3d609-1467-4874-9c16-49b189903af7
+		summarizeBy: none
+		sourceColumn: leadAgentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column leadSessionId
+		dataType: string
+		isHidden
+		lineageTag: 02734320-c042-4b48-9efd-542526bd9068
+		summarizeBy: none
+		sourceColumn: leadSessionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column sessionId8
+		dataType: string
+		isHidden
+		lineageTag: 31dcdfc0-6dc3-4c0a-9338-a805b425968d
+		summarizeBy: none
+		sourceColumn: sessionId8
+
+		annotation SummarizationSetBy = Automatic
+
+	column memberCount
+		dataType: int64
+		lineageTag: b9d8891c-b59a-4aae-9967-7c6f50fdc85f
+		summarizeBy: sum
+		sourceColumn: memberCount
+
+	column CreatedAt
+		dataType: dateTime
+		lineageTag: b78b37e7-00bb-49ed-ae61-e180eff626db
+		summarizeBy: none
+		sourceColumn: CreatedAt
+
+		variation Variation
+			isDefault
+			relationship: a9c6d47e-2035-4ecd-917c-d41e9bd1152c
+			defaultHierarchy: LocalDateTable_00813db3-a8eb-450d-ba5d-4c6d81fb46ed.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Teams = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files(ClaudeHomePath & "\teams"),
+				    FilteredJson = Table.SelectRows(Source, each [Name] = "config.json"),
+				    AddedContentText = Table.AddColumn(FilteredJson, "ContentText", each Text.FromBinary([Content])),
+				    AddedParsed = Table.AddColumn(AddedContentText, "Record", each try Json.Document([ContentText]) otherwise null),
+				    ValidRecords = Table.SelectRows(AddedParsed, each [Record] <> null and Value.Is([Record], type record)),
+				    AddedFields = Table.AddColumn(ValidRecords, "Fields", each
+				        let
+				            rec = [Record],
+				            leadSessionId = Record.FieldOrDefault(rec, "leadSessionId", null),
+				            members = Record.FieldOrDefault(rec, "members", null),
+				            membersSafe = if members <> null and Value.Is(members, type list) then members else {}
+				        in [
+				            teamName = Record.FieldOrDefault(rec, "name", null),
+				            createdAtMs = Record.FieldOrDefault(rec, "createdAt", null),
+				            leadAgentId = Record.FieldOrDefault(rec, "leadAgentId", null),
+				            leadSessionId = leadSessionId,
+				            sessionId8 = if leadSessionId <> null then Text.Start(Text.From(leadSessionId), 8) else null,
+				            memberCount = List.Count(membersSafe)
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedFields, "Fields", {"teamName","createdAtMs","leadAgentId","leadSessionId","sessionId8","memberCount"}),
+				    RemovedHelpers = Table.SelectColumns(Expanded, {"teamName","createdAtMs","leadAgentId","leadSessionId","sessionId8","memberCount"}),
+				    AddedCreatedAt = Table.AddColumn(RemovedHelpers, "CreatedAt", each try #datetime(1970,1,1,0,0,0) + #duration(0,0,0,[createdAtMs]/1000) otherwise null),
+				    RemovedMs = Table.RemoveColumns(AddedCreatedAt, {"createdAtMs"}),
+				    ChangedTypes = Table.TransformColumnTypes(RemovedMs, {
+				        {"teamName", type text}, {"leadAgentId", type text}, {"leadSessionId", type text},
+				        {"sessionId8", type text}, {"memberCount", Int64.Type}, {"CreatedAt", type datetime}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

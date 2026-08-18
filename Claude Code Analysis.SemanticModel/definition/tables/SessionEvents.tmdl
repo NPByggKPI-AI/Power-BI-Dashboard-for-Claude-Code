@@ -1,0 +1,247 @@
+table SessionEvents
+	lineageTag: 6343817b-e486-4f1b-a5d1-7987d38af417
+
+	/// Sum of input tokens consumed across all assistant responses.
+	measure 'Total Input Tokens' = SUM(SessionEvents[inputTokens])
+		formatString: #,0
+		displayFolder: Performance Measures
+		lineageTag: fa828d3c-c0dc-4c98-886d-b2d5a7bf24c7
+
+	/// Sum of output tokens generated across all assistant responses.
+	measure 'Total Output Tokens' = SUM(SessionEvents[outputTokens])
+		formatString: #,0
+		displayFolder: Performance Measures
+		lineageTag: b770d263-003b-4e43-861c-b2dfc36b835e
+
+	/// Sum of tokens written to the prompt cache across all assistant responses.
+	measure 'Total Cache Creation Tokens' = SUM(SessionEvents[cacheCreationTokens])
+		formatString: #,0
+		displayFolder: Performance Measures
+		lineageTag: 36013e28-877e-4d9d-989d-d1eb9ec227c0
+
+	/// Sum of tokens served from the prompt cache across all assistant responses.
+	measure 'Total Cache Read Tokens' = SUM(SessionEvents[cacheReadTokens])
+		formatString: #,0
+		displayFolder: Performance Measures
+		lineageTag: c0379000-ef4d-4108-816f-ff7479f95a11
+
+	/// Sum of input, output, cache-creation, and cache-read tokens combined.
+	measure 'Total Tokens (All)' = [Total Input Tokens] + [Total Output Tokens] + [Total Cache Creation Tokens] + [Total Cache Read Tokens]
+		formatString: #,0
+		displayFolder: Performance Measures
+		lineageTag: 03052532-8dac-4e75-89cb-0acfe4ee93f5
+
+	/// Estimated USD cost, computed per event at its own model's rate from ModelRates before summing (not a blended average rate).
+	measure 'Estimated Cost' =
+			SUMX(
+			    SessionEvents,
+			    VAR ModelName = SessionEvents[model]
+			    VAR InputRate = LOOKUPVALUE(ModelRates[InputRatePerMTok], ModelRates[Model], ModelName)
+			    VAR OutputRate = LOOKUPVALUE(ModelRates[OutputRatePerMTok], ModelRates[Model], ModelName)
+			    VAR CacheWriteRate = LOOKUPVALUE(ModelRates[CacheWriteRatePerMTok], ModelRates[Model], ModelName)
+			    VAR CacheReadRate = LOOKUPVALUE(ModelRates[CacheReadRatePerMTok], ModelRates[Model], ModelName)
+			    RETURN
+			        DIVIDE(SessionEvents[inputTokens] * InputRate, 1000000)
+			        + DIVIDE(SessionEvents[outputTokens] * OutputRate, 1000000)
+			        + DIVIDE(SessionEvents[cacheCreationTokens] * CacheWriteRate, 1000000)
+			        + DIVIDE(SessionEvents[cacheReadTokens] * CacheReadRate, 1000000)
+			)
+		formatString: $#,0.00
+		displayFolder: Performance Measures
+		lineageTag: 61cee6d6-1e9c-42c3-8f00-b4bc4d450493
+
+	/// Count of user-authored turns (prompts) in the session transcripts.
+	measure 'User Turn Count' = CALCULATE(COUNTROWS(SessionEvents), SessionEvents[EventType] = "user")
+		formatString: #,0
+		displayFolder: Performance Measures
+		lineageTag: 00cdbe5f-5feb-4a2e-bc25-fe231d7ba8da
+
+	column FileName
+		dataType: string
+		lineageTag: db28ad42-2bb4-4da3-8460-48b76efbbd8e
+		summarizeBy: none
+		sourceColumn: FileName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectFolderPath
+		dataType: string
+		lineageTag: 259145b2-1868-4353-ba0e-19823ec277df
+		summarizeBy: none
+		sourceColumn: ProjectFolderPath
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventType
+		dataType: string
+		lineageTag: 9e7a5a37-a287-42cb-8942-49f95ed001ef
+		summarizeBy: none
+		sourceColumn: EventType
+
+		annotation SummarizationSetBy = Automatic
+
+	column sessionId
+		dataType: string
+		lineageTag: 54d4c872-8103-466c-8575-1eb23099abce
+		summarizeBy: none
+		sourceColumn: sessionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column cwd
+		dataType: string
+		lineageTag: 280a11bc-1c2b-442d-94ff-0fdab2ed1e94
+		summarizeBy: none
+		sourceColumn: cwd
+
+		annotation SummarizationSetBy = Automatic
+
+	column gitBranch
+		dataType: string
+		lineageTag: 38c49f1f-f1ed-46e7-8aa7-53b18fea9e63
+		summarizeBy: none
+		sourceColumn: gitBranch
+
+		annotation SummarizationSetBy = Automatic
+
+	column version
+		dataType: string
+		lineageTag: 64d0f334-61c3-4162-9da4-b8709f33d50c
+		summarizeBy: none
+		sourceColumn: version
+
+		annotation SummarizationSetBy = Automatic
+
+	column entrypoint
+		dataType: string
+		lineageTag: 1c4de6ef-63a8-4f5b-b115-1adef7cbf930
+		summarizeBy: none
+		sourceColumn: entrypoint
+
+		annotation SummarizationSetBy = Automatic
+
+	column promptSource
+		dataType: string
+		lineageTag: fd3976c0-183e-46c6-982f-b3bedfc45c61
+		summarizeBy: none
+		sourceColumn: promptSource
+
+		annotation SummarizationSetBy = Automatic
+
+	column model
+		dataType: string
+		lineageTag: e0371f25-f629-4f20-8a8e-60dd194a6029
+		summarizeBy: none
+		sourceColumn: model
+
+		annotation SummarizationSetBy = Automatic
+
+	column inputTokens
+		dataType: int64
+		lineageTag: d6020ff9-425b-455d-a4ab-db98b5c1b0f6
+		summarizeBy: sum
+		sourceColumn: inputTokens
+
+	column outputTokens
+		dataType: int64
+		lineageTag: 64ab4274-00ce-49f1-86e0-75edaee749a6
+		summarizeBy: sum
+		sourceColumn: outputTokens
+
+	column cacheCreationTokens
+		dataType: int64
+		lineageTag: 12c7a9b9-4daa-4b8b-bd08-803e2a288c05
+		summarizeBy: sum
+		sourceColumn: cacheCreationTokens
+
+	column cacheReadTokens
+		dataType: int64
+		lineageTag: 2e92c271-1a7a-4ee3-92a5-e098a099aeed
+		summarizeBy: sum
+		sourceColumn: cacheReadTokens
+
+	column EventTimestamp
+		dataType: dateTime
+		lineageTag: 25bd67c8-218a-4146-ac36-7ba519635a19
+		summarizeBy: none
+		sourceColumn: EventTimestamp
+
+		variation Variation
+			isDefault
+			relationship: 5cdc15cd-8db0-494d-9495-64276633bc1b
+			defaultHierarchy: LocalDateTable_6b9bbdb2-acee-447f-9812-f411b209337a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventDate
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 46ae3e2d-e384-42f6-84f8-f7a1cf9ea45d
+		summarizeBy: none
+		sourceColumn: EventDate
+
+		variation Variation
+			isDefault
+			relationship: 464f7aa4-3cf0-4a3a-9d6c-f71e769c7c88
+			defaultHierarchy: LocalDateTable_0f7b48c7-1878-4dee-97bb-dc0aa3808c17.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SessionEvents = m
+		mode: import
+		source =
+				let
+				    Source = Projects,
+				    FilteredExtension = Table.SelectRows(Source, each [Extension] = ".jsonl"),
+				    AddedLines = Table.AddColumn(FilteredExtension, "Lines", each Lines.FromBinary([Content], null, null, 1252)),
+				    SelectedCols = Table.SelectColumns(AddedLines, {"Name", "Folder Path", "Lines"}),
+				    ExpandedLines = Table.ExpandListColumn(SelectedCols, "Lines"),
+				    RenamedLine = Table.RenameColumns(ExpandedLines, {{"Lines", "RawLine"}}),
+				    NonEmpty = Table.SelectRows(RenamedLine, each [RawLine] <> null and Text.Trim([RawLine]) <> ""),
+				    AddedParsed = Table.AddColumn(NonEmpty, "Record", each try Json.Document(Text.ToBinary([RawLine])) otherwise null),
+				    ValidRecords = Table.SelectRows(AddedParsed, each [Record] <> null and Value.Is([Record], type record)),
+				    AddedEventType = Table.AddColumn(ValidRecords, "EventType", each Record.FieldOrDefault([Record], "type", null)),
+				    FilteredType = Table.SelectRows(AddedEventType, each [EventType] = "user" or [EventType] = "assistant"),
+				    AddedFields = Table.AddColumn(FilteredType, "Fields", each
+				        let
+				            rec = [Record],
+				            msg = Record.FieldOrDefault(rec, "message", null),
+				            msgIsRecord = msg <> null and Value.Is(msg, type record),
+				            usage = if msgIsRecord then Record.FieldOrDefault(msg, "usage", null) else null,
+				            usageIsRecord = usage <> null and Value.Is(usage, type record)
+				        in [
+				            sessionId = Record.FieldOrDefault(rec, "sessionId", null),
+				            timestampText = Record.FieldOrDefault(rec, "timestamp", null),
+				            cwd = Record.FieldOrDefault(rec, "cwd", null),
+				            gitBranch = Record.FieldOrDefault(rec, "gitBranch", null),
+				            version = Record.FieldOrDefault(rec, "version", null),
+				            entrypoint = Record.FieldOrDefault(rec, "entrypoint", null),
+				            promptSource = Record.FieldOrDefault(rec, "promptSource", null),
+				            model = if msgIsRecord then Record.FieldOrDefault(msg, "model", null) else null,
+				            inputTokens = if usageIsRecord then Record.FieldOrDefault(usage, "input_tokens", null) else null,
+				            outputTokens = if usageIsRecord then Record.FieldOrDefault(usage, "output_tokens", null) else null,
+				            cacheCreationTokens = if usageIsRecord then Record.FieldOrDefault(usage, "cache_creation_input_tokens", null) else null,
+				            cacheReadTokens = if usageIsRecord then Record.FieldOrDefault(usage, "cache_read_input_tokens", null) else null
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedFields, "Fields", {"sessionId","timestampText","cwd","gitBranch","version","entrypoint","promptSource","model","inputTokens","outputTokens","cacheCreationTokens","cacheReadTokens"}),
+				    RemovedHelpers = Table.SelectColumns(Expanded, {"Name","Folder Path","EventType","sessionId","timestampText","cwd","gitBranch","version","entrypoint","promptSource","model","inputTokens","outputTokens","cacheCreationTokens","cacheReadTokens"}),
+				    AddedTimestamp = Table.AddColumn(RemovedHelpers, "EventTimestamp", each try DateTimeZone.RemoveZone(DateTimeZone.From([timestampText])) otherwise null),
+				    RemovedTimestampText = Table.RemoveColumns(AddedTimestamp, {"timestampText"}),
+				    ChangedTypes = Table.TransformColumnTypes(RemovedTimestampText, {
+				        {"Name", type text}, {"Folder Path", type text}, {"EventType", type text}, {"sessionId", type text},
+				        {"cwd", type text}, {"gitBranch", type text}, {"version", type text}, {"entrypoint", type text},
+				        {"promptSource", type text}, {"model", type text}, {"inputTokens", Int64.Type}, {"outputTokens", Int64.Type},
+				        {"cacheCreationTokens", Int64.Type}, {"cacheReadTokens", Int64.Type}, {"EventTimestamp", type datetime}
+				    }),
+				    AddedDate = Table.AddColumn(ChangedTypes, "EventDate", each try Date.From([EventTimestamp]) otherwise null, type date),
+				    Renamed = Table.RenameColumns(AddedDate, {{"Name","FileName"},{"Folder Path","ProjectFolderPath"}})
+				in
+				    Renamed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "c413e05d059349ddcc00",
+  "position": {
+    "x": 1600,
+    "y": 24,
+    "z": 2000,
+    "height": 96,
+    "width": 130,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "card",
+    "autoSelectVisualType": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "history"
+                    }
+                  },
+                  "Property": "Total Prompts"
+                }
+              },
+              "queryRef": "history.Total Prompts",
+              "nativeQueryRef": "Prompts",
+              "displayName": "Prompts"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "f60edea6624aa6b0c9ba",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "history"
+              }
+            },
+            "Property": "Total Prompts"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

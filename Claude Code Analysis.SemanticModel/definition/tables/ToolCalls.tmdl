@@ -1,0 +1,108 @@
+table ToolCalls
+	lineageTag: 0951e507-dd8c-4733-8a6c-b032d45b805e
+
+	/// Count of tool invocations across all assistant turns.
+	measure 'Tool Call Count' = COUNTROWS(ToolCalls)
+		formatString: #,0
+		displayFolder: Orchestration Measures
+		lineageTag: 9937ef86-8f75-496b-a3e0-4775722c6b4c
+
+	/// Count of distinct tool names invoked.
+	measure 'Distinct Tools Used' = DISTINCTCOUNT(ToolCalls[toolName])
+		formatString: #,0
+		displayFolder: Orchestration Measures
+		lineageTag: 5ff5e4ec-b144-4193-ba2a-2bdea37bbd53
+
+	/// Average number of tool calls per session that has at least one tool call.
+	measure 'Avg Tool Calls per Session' = DIVIDE(COUNTROWS(ToolCalls), DISTINCTCOUNT(ToolCalls[sessionId]))
+		formatString: #,0.0
+		displayFolder: Orchestration Measures
+		lineageTag: fcb6365e-721a-487b-979c-f8693d798343
+
+	column sessionId
+		dataType: string
+		isHidden
+		lineageTag: 89095892-5bd7-4969-941e-fe180b639e3f
+		summarizeBy: none
+		sourceColumn: sessionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column toolUseId
+		dataType: string
+		isHidden
+		lineageTag: 55332623-c732-445c-963a-eca6d1e88342
+		summarizeBy: none
+		sourceColumn: toolUseId
+
+		annotation SummarizationSetBy = Automatic
+
+	column toolName
+		dataType: string
+		lineageTag: 9639eea1-a7e9-4d26-b642-dea14b7a0191
+		summarizeBy: none
+		sourceColumn: toolName
+
+		annotation SummarizationSetBy = Automatic
+
+	column EventTimestamp
+		dataType: dateTime
+		lineageTag: 78a2a6cb-09c3-47e8-87b2-ce00f5740396
+		summarizeBy: none
+		sourceColumn: EventTimestamp
+
+		variation Variation
+			isDefault
+			relationship: 8ce3932f-348c-4954-bdb6-56c5c0fc9a12
+			defaultHierarchy: LocalDateTable_6c28e2e7-7195-4097-96c7-5dbfb07f4c65.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ToolCalls = m
+		mode: import
+		source =
+				let
+				    Source = Projects,
+				    FilteredExtension = Table.SelectRows(Source, each [Extension] = ".jsonl"),
+				    AddedLines = Table.AddColumn(FilteredExtension, "Lines", each Lines.FromBinary([Content], null, null, 1252)),
+				    SelectedCols = Table.SelectColumns(AddedLines, {"Name", "Folder Path", "Lines"}),
+				    ExpandedLines = Table.ExpandListColumn(SelectedCols, "Lines"),
+				    RenamedLine = Table.RenameColumns(ExpandedLines, {{"Lines", "RawLine"}}),
+				    NonEmpty = Table.SelectRows(RenamedLine, each [RawLine] <> null and Text.Trim([RawLine]) <> ""),
+				    AddedParsed = Table.AddColumn(NonEmpty, "Record", each try Json.Document(Text.ToBinary([RawLine])) otherwise null),
+				    ValidRecords = Table.SelectRows(AddedParsed, each [Record] <> null and Value.Is([Record], type record)),
+				    AddedEventType = Table.AddColumn(ValidRecords, "EventType", each Record.FieldOrDefault([Record], "type", null)),
+				    FilteredAssistant = Table.SelectRows(AddedEventType, each [EventType] = "assistant"),
+				    AddedContent = Table.AddColumn(FilteredAssistant, "ContentList", each
+				        let
+				            msg = Record.FieldOrDefault([Record], "message", null),
+				            content = if msg <> null and Value.Is(msg, type record) then Record.FieldOrDefault(msg, "content", null) else null
+				        in if content <> null and Value.Is(content, type list) then content else {}
+				    ),
+				    ExpandedContent = Table.ExpandListColumn(AddedContent, "ContentList"),
+				    FilteredToolUse = Table.SelectRows(ExpandedContent, each [ContentList] <> null and Value.Is([ContentList], type record) and Record.FieldOrDefault([ContentList], "type", null) = "tool_use"),
+				    AddedFields = Table.AddColumn(FilteredToolUse, "Fields", each
+				        let
+				            rec = [Record],
+				            block = [ContentList]
+				        in [
+				            sessionId = Record.FieldOrDefault(rec, "sessionId", null),
+				            timestampText = Record.FieldOrDefault(rec, "timestamp", null),
+				            toolUseId = Record.FieldOrDefault(block, "id", null),
+				            toolName = Record.FieldOrDefault(block, "name", null)
+				        ]
+				    ),
+				    Expanded = Table.ExpandRecordColumn(AddedFields, "Fields", {"sessionId","timestampText","toolUseId","toolName"}),
+				    RemovedHelpers = Table.SelectColumns(Expanded, {"sessionId","timestampText","toolUseId","toolName"}),
+				    AddedTimestamp = Table.AddColumn(RemovedHelpers, "EventTimestamp", each try DateTimeZone.RemoveZone(DateTimeZone.From([timestampText])) otherwise null),
+				    RemovedTimestampText = Table.RemoveColumns(AddedTimestamp, {"timestampText"}),
+				    ChangedTypes = Table.TransformColumnTypes(RemovedTimestampText, {
+				        {"sessionId", type text}, {"toolUseId", type text}, {"toolName", type text}, {"EventTimestamp", type datetime}
+				    })
+				in
+				    ChangedTypes
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,6 @@
+/// Base folder for all Claude Code data sources (~/.claude) - referenced by every table sourced from Folder.Files/File.Contents
+expression ClaudeHomePath = "C:\Temp\pbi-dist\synthetic\.claude" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: bf50fc82-be30-40c1-aad4-e9ca211d73a3
+
+	annotation PBI_ResultType = Text
+

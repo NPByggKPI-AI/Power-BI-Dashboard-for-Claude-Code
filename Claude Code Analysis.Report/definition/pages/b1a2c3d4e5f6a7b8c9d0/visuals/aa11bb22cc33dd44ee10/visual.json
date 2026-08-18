@@ -1,0 +1,276 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "aa11bb22cc33dd44ee10",
+  "position": {
+    "x": 1300,
+    "y": 528,
+    "z": 10000,
+    "height": 360,
+    "width": 580,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "history"
+                    }
+                  },
+                  "Property": "project"
+                }
+              },
+              "queryRef": "history.project",
+              "nativeQueryRef": "project",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SessionEvents"
+                    }
+                  },
+                  "Property": "Total Output Tokens"
+                }
+              },
+              "queryRef": "SessionEvents.Total Output Tokens",
+              "nativeQueryRef": "Total Output Tokens"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SessionEvents"
+                    }
+                  },
+                  "Property": "Total Tokens (All)"
+                }
+              },
+              "queryRef": "SessionEvents.Total Tokens (All)",
+              "nativeQueryRef": "Total Tokens (All)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SessionEvents"
+                    }
+                  },
+                  "Property": "Total Input Tokens"
+                }
+              },
+              "queryRef": "SessionEvents.Total Input Tokens",
+              "nativeQueryRef": "Total Input Tokens"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SessionEvents"
+                    }
+                  },
+                  "Property": "Total Cache Creation Tokens"
+                }
+              },
+              "queryRef": "SessionEvents.Total Cache Creation Tokens",
+              "nativeQueryRef": "Total Cache Creation Tokens"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SessionEvents"
+                    }
+                  },
+                  "Property": "Total Cache Read Tokens"
+                }
+              },
+              "queryRef": "SessionEvents.Total Cache Read Tokens",
+              "nativeQueryRef": "Total Cache Read Tokens"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "SessionEvents"
+                  }
+                },
+                "Property": "Total Output Tokens"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "legend": [
+        {
+          "properties": {
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Right'"
+                }
+              }
+            },
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Tokens'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Total Tokens'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "398bdf68eee21c35e07e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "SessionEvents"
+              }
+            },
+            "Property": "Total Output Tokens"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "78bcb58732385b776c8c",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "SessionEvents"
+              }
+            },
+            "Property": "Total Tokens (All)"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "c1ddc89be9eaa7a2ec53",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "SessionEvents"
+              }
+            },
+            "Property": "Total Input Tokens"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "099fadd90e91b75daa5d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "SessionEvents"
+              }
+            },
+            "Property": "Total Cache Creation Tokens"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "fdcc49e5b06a01fc3b7e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "SessionEvents"
+              }
+            },
+            "Property": "Total Cache Read Tokens"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "81caaadc590e05c2e678",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "history"
+              }
+            },
+            "Property": "project"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}
